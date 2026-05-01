@@ -1,6 +1,6 @@
 // Fill in your Google Analytics measurement ID to enable visitor statistics.
 // Example: window.ZODIAC_GA_ID = "G-XXXXXXXXXX";
-window.ZODIAC_GA_ID = "";
+window.ZODIAC_GA_ID = "G-L0376CLDH8";
 
 if (window.ZODIAC_GA_ID) {
   const gtagScript = document.createElement("script");
