@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>星座月运势 | 2026 十二星座运势与精美解说卡</title>
+    <meta
+      name="description"
+      content="查看2026年十二星座每月运势，包含核心主题、工作学习、感情家庭、财运、健康，以及精美运势解说卡抽取。"
+    />
+    <meta name="keywords" content="星座运势,十二星座,2026星座运势,月运势,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座,摩羯座,水瓶座,双鱼座" />
+    <meta name="author" content="Zodiac Forecast" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#10131b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="星座月运势" />
+    <meta property="og:description" content="2026年十二星座月运势与精美运势解说卡。" />
+    <meta property="og:image" content="zodiac-backgrounds/aries-background.png" />
+    <meta property="og:locale" content="zh_CN" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="pwa-icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="zodiac-background-grid" aria-hidden="true">
+      <img src="zodiac-backgrounds/aries-background.png" alt="" />
+      <img src="zodiac-backgrounds/taurus-background.png" alt="" />
+      <img src="zodiac-backgrounds/gemini-background.png" alt="" />
+      <img src="zodiac-backgrounds/cancer-background.png" alt="" />
+      <img src="zodiac-backgrounds/leo-background.png" alt="" />
+      <img src="zodiac-backgrounds/virgo-background.png" alt="" />
+      <img src="zodiac-backgrounds/libra-background.png" alt="" />
+      <img src="zodiac-backgrounds/scorpio-background.png" alt="" />
+      <img src="zodiac-backgrounds/sagittarius-background.png" alt="" />
+      <img src="zodiac-backgrounds/capricorn-background.png" alt="" />
+      <img src="zodiac-backgrounds/aquarius-background.png" alt="" />
+      <img src="zodiac-backgrounds/pisces-background.png" alt="" />
+    </div>
+
+    <main class="app-shell">
+      <nav class="language-switcher" aria-label="语言切换">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="ja">日文</button>
+        <button type="button" data-lang="zh" class="is-active">中文</button>
+      </nav>
+
+      <section class="sky-panel" aria-label="星座运势查询">
+        <div class="sky-art" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <header class="masthead">
+          <p class="eyebrow">Zodiac Forecast</p>
+          <h1>星座月运势</h1>
+          <p class="lead">选择年份、月份，再点击星座图标查看五项重点运势。</p>
+        </header>
+
+        <div class="controls" aria-label="时间选择">
+          <label>
+            <span>年份</span>
+            <select id="yearSelect" aria-label="选择年份"></select>
+          </label>
+          <label>
+            <span>月份</span>
+            <select id="monthSelect" aria-label="选择月份"></select>
+          </label>
+        </div>
+      </section>
+
+      <section class="zodiac-section" aria-label="十二星座">
+        <div class="section-heading">
+          <h2>选择星座</h2>
+          <p id="currentPeriod"></p>
+        </div>
+        <div class="zodiac-grid" id="zodiacGrid"></div>
+      </section>
+
+      <section class="reading-panel" id="readingPanel" aria-live="polite">
+        <div class="reading-title">
+          <div class="selected-symbol" id="selectedSymbol"></div>
+          <div>
+            <p id="selectedDates"></p>
+            <h2 id="selectedName"></h2>
+          </div>
+        </div>
+
+        <section class="card-draw" aria-label="精美运势解说卡">
+          <div>
+            <h3>精美运势解说卡</h3>
+            <p id="cardHint">点击按钮查看本星座本月运势图。</p>
+          </div>
+          <button class="draw-button" id="drawCardButton" type="button">抽卡</button>
+          <figure class="card-result" id="cardResult" hidden>
+            <button class="close-card-button" id="closeCardButton" type="button" aria-label="关闭运势图">关闭</button>
+            <img id="fortuneCardImage" src="" alt="" />
+            <figcaption id="cardCaption"></figcaption>
+            <a class="download-card-button" id="downloadCardButton" href="#" download>下载图片</a>
+          </figure>
+        </section>
+
+        <article class="month-note" id="monthOverview" hidden></article>
+        <ol class="fortune-list" id="fortuneList"></ol>
+        <article class="month-note conclusion-note" id="monthConclusion" hidden></article>
+      </section>
+    </main>
+
+    <script src="analytics.js"></script>
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("service-worker.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
