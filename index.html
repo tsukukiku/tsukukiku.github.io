@@ -3,118 +3,410 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>星座月运势 | 2026 十二星座运势与精美解说卡</title>
+    <title>星运命理站 | Star Style Studio | 星運命理ステーション</title>
     <meta
       name="description"
-      content="查看2026年十二星座每月运势，包含核心主题、工作学习、感情家庭、财运、健康，以及精美运势解说卡抽取。"
+      content="星运命理站 Star Style Studio 星運命理ステーション：星座运势分析 Horoscope Analysis、手相命运分析 Palm Reading & Fate Analysis、个人形象设计 Personal Style Analysis。"
     />
-    <meta name="keywords" content="星座运势,十二星座,2026星座运势,月运势,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座,摩羯座,水瓶座,双鱼座" />
-    <meta name="author" content="Zodiac Forecast" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#10131b" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="星座月运势" />
-    <meta property="og:description" content="2026年十二星座月运势与精美运势解说卡。" />
-    <meta property="og:image" content="zodiac-backgrounds/aries-background.png" />
-    <meta property="og:locale" content="zh_CN" />
-    <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="pwa-icon-192.png" />
-    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #10131b;
+        --panel: rgba(20, 24, 34, 0.72);
+        --line: rgba(255, 255, 255, 0.16);
+        --text: #f7f3ea;
+        --muted: #b9c0ce;
+        --gold: #e5b765;
+        --aqua: #7ec7bd;
+        --rose: #d9879b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        position: relative;
+        background: #10131b;
+        font-family:
+          "Microsoft YaHei",
+          "PingFang SC",
+          "Hiragino Sans",
+          "Yu Gothic",
+          system-ui,
+          sans-serif;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background:
+          linear-gradient(135deg, rgba(13, 17, 25, 0.36), rgba(34, 25, 35, 0.42)),
+          url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Milky_Way_and_starry_night_sky_%2826972689115%29.jpg?width=2560") center / cover no-repeat;
+        filter: brightness(1.08) saturate(1.12);
+      }
+
+      body::after {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background:
+          radial-gradient(circle at 10% 0%, rgba(126, 199, 189, 0.18), transparent 34rem),
+          radial-gradient(circle at 90% 20%, rgba(217, 135, 155, 0.16), transparent 30rem);
+        pointer-events: none;
+      }
+
+      main {
+        width: min(1220px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 42px 0 56px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 28px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--gold);
+        font-size: 0.84rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2.6rem, 8vw, 5.8rem);
+        line-height: 0.96;
+      }
+
+      .title-stack {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .title-stack h1 {
+        margin: 0;
+      }
+
+      .title-en,
+      .title-ja {
+        margin: 0;
+        color: var(--muted);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .title-en {
+        color: var(--aqua);
+        font-size: clamp(1.35rem, 3vw, 2.2rem);
+      }
+
+      .title-ja {
+        color: var(--gold);
+        font-size: clamp(1.05rem, 2.3vw, 1.65rem);
+      }
+
+      .lead {
+        max-width: 760px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      .slogan {
+        border-left: 1px solid rgba(229, 183, 101, 0.42);
+        padding-left: 24px;
+      }
+
+      .slogan p {
+        margin: 0 0 10px;
+        color: var(--text);
+        font-size: clamp(1rem, 2vw, 1.28rem);
+        font-weight: 700;
+        line-height: 1.65;
+      }
+
+      .slogan p:last-child {
+        margin-bottom: 0;
+      }
+
+      .slogan .slogan-en {
+        color: var(--aqua);
+      }
+
+      .slogan .slogan-ja {
+        color: var(--gold);
+      }
+
+      .portal-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .portal-card {
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+      }
+
+      .portal-card:nth-child(1) {
+        background: linear-gradient(135deg, rgba(54, 84, 146, 0.54), rgba(20, 24, 34, 0.7));
+      }
+
+      .portal-card:nth-child(2) {
+        background: linear-gradient(135deg, rgba(126, 199, 189, 0.3), rgba(20, 24, 34, 0.72));
+      }
+
+      .portal-card:nth-child(3) {
+        background: linear-gradient(135deg, rgba(217, 135, 155, 0.34), rgba(20, 24, 34, 0.72));
+      }
+
+      .portal-link {
+        display: block;
+        padding: 22px 22px 18px;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .portal-link:hover h2,
+      .portal-link:focus-visible h2 {
+        color: var(--gold);
+      }
+
+      .portal-link:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: -2px;
+      }
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: clamp(1.35rem, 3vw, 2rem);
+        line-height: 1.25;
+      }
+
+      .topic-title-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 2ch;
+        align-items: baseline;
+      }
+
+      h2 span {
+        display: block;
+      }
+
+      h2 .topic-en {
+        margin-top: 4px;
+        color: var(--aqua);
+        font-size: 0.82em;
+      }
+
+      h2 .topic-ja {
+        margin-top: 2px;
+        color: var(--gold);
+        font-size: 0.74em;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.52em;
+        font-weight: 500;
+        line-height: 1.65;
+      }
+
+      .carousel {
+        position: relative;
+        overflow: hidden;
+        border-top: 1px solid var(--line);
+      }
+
+      .cover-track {
+        display: flex;
+        width: max-content;
+        gap: 12px;
+        padding: 16px;
+        will-change: transform;
+      }
+
+      .portal-card:hover .cover-track {
+        animation-play-state: paused;
+      }
+
+      .cover-track img {
+        width: 124px;
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      @media (max-width: 920px) {
+        header {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .slogan {
+          border-left: 0;
+          border-top: 1px solid rgba(229, 183, 101, 0.42);
+          padding-top: 18px;
+          padding-left: 0;
+        }
+
+        .cover-track img {
+          width: 113px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cover-track {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="zodiac-background-grid" aria-hidden="true">
-      <img src="zodiac-backgrounds/aries-background.png" alt="" />
-      <img src="zodiac-backgrounds/taurus-background.png" alt="" />
-      <img src="zodiac-backgrounds/gemini-background.png" alt="" />
-      <img src="zodiac-backgrounds/cancer-background.png" alt="" />
-      <img src="zodiac-backgrounds/leo-background.png" alt="" />
-      <img src="zodiac-backgrounds/virgo-background.png" alt="" />
-      <img src="zodiac-backgrounds/libra-background.png" alt="" />
-      <img src="zodiac-backgrounds/scorpio-background.png" alt="" />
-      <img src="zodiac-backgrounds/sagittarius-background.png" alt="" />
-      <img src="zodiac-backgrounds/capricorn-background.png" alt="" />
-      <img src="zodiac-backgrounds/aquarius-background.png" alt="" />
-      <img src="zodiac-backgrounds/pisces-background.png" alt="" />
-    </div>
-
-    <main class="app-shell">
-      <nav class="language-switcher" aria-label="语言切换">
-        <button type="button" data-lang="en">EN</button>
-        <button type="button" data-lang="ja">日文</button>
-        <button type="button" data-lang="zh" class="is-active">中文</button>
-      </nav>
-
-      <section class="sky-panel" aria-label="星座运势查询">
-        <div class="sky-art" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <header class="masthead">
-          <p class="eyebrow">Zodiac Forecast</p>
-          <h1>星座月运势</h1>
-          <p class="lead">选择年份、月份，再点击星座图标查看五项重点运势。</p>
-        </header>
-
-        <div class="controls" aria-label="时间选择">
-          <label>
-            <span>年份</span>
-            <select id="yearSelect" aria-label="选择年份"></select>
-          </label>
-          <label>
-            <span>月份</span>
-            <select id="monthSelect" aria-label="选择月份"></select>
-          </label>
-        </div>
-      </section>
-
-      <section class="zodiac-section" aria-label="十二星座">
-        <div class="section-heading">
-          <h2>选择星座</h2>
-          <p id="currentPeriod"></p>
-        </div>
-        <div class="zodiac-grid" id="zodiacGrid"></div>
-      </section>
-
-      <section class="reading-panel" id="readingPanel" aria-live="polite">
-        <div class="reading-title">
-          <div class="selected-symbol" id="selectedSymbol"></div>
-          <div>
-            <p id="selectedDates"></p>
-            <h2 id="selectedName"></h2>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">Divination & Style Portal</p>
+          <div class="title-stack">
+            <h1>星运命理站</h1>
+            <p class="title-en">Star Style Studio</p>
+            <p class="title-ja">星運命理ステーション</p>
           </div>
+          <p class="lead">请选择一个主题进入。</p>
         </div>
+        <div class="slogan" aria-label="网站口号">
+          <p>了解命运，探索可能，优化未来</p>
+          <p class="slogan-en">Understand your destiny, explore possibilities, and shape your future.</p>
+          <p class="slogan-ja">運命を理解し、可能性を探り、未来をより良くする</p>
+        </div>
+      </header>
 
-        <section class="card-draw" aria-label="精美运势解说卡">
-          <div>
-            <h3>精美运势解说卡</h3>
-            <p id="cardHint">点击按钮查看本星座本月运势图。</p>
+      <section class="portal-grid" aria-label="站点入口">
+        <article class="portal-card">
+          <a class="portal-link" href="zodiac/">
+            <h2>
+              <span class="topic-title-row">
+                <span>星座运势分析</span>
+                <span class="subtitle">十二星座月运势与精美运势解说卡。</span>
+              </span>
+              <span class="topic-en">Horoscope Analysis</span>
+              <span class="topic-ja">占星術リーディング（星座）</span>
+            </h2>
+          </a>
+          <div class="carousel" aria-hidden="true">
+            <div class="cover-track" data-folder="zodiac-covers" data-prefix="Zodiac" data-count="37"></div>
           </div>
-          <button class="draw-button" id="drawCardButton" type="button">抽卡</button>
-          <figure class="card-result" id="cardResult" hidden>
-            <button class="close-card-button" id="closeCardButton" type="button" aria-label="关闭运势图">关闭</button>
-            <img id="fortuneCardImage" src="" alt="" />
-            <figcaption id="cardCaption"></figcaption>
-            <a class="download-card-button" id="downloadCardButton" href="#" download>下载图片</a>
-          </figure>
-        </section>
+        </article>
 
-        <article class="month-note" id="monthOverview" hidden></article>
-        <ol class="fortune-list" id="fortuneList"></ol>
-        <article class="month-note conclusion-note" id="monthConclusion" hidden></article>
+        <article class="portal-card">
+          <a class="portal-link" href="palm/">
+            <h2>
+              <span class="topic-title-row">
+                <span>手相命运分析</span>
+                <span class="subtitle">掌纹、手型与个人特质分析。</span>
+              </span>
+              <span class="topic-en">Palm Reading &amp; Fate Analysis</span>
+              <span class="topic-ja">手相鑑定</span>
+            </h2>
+          </a>
+          <div class="carousel" aria-hidden="true">
+            <div class="cover-track" data-folder="palm-covers" data-prefix="palm" data-count="25"></div>
+          </div>
+        </article>
+
+        <article class="portal-card">
+          <a class="portal-link" href="hair/">
+            <h2>
+              <span class="topic-title-row">
+                <span>个人形象设计</span>
+                <span class="subtitle">脸型、气质与发型风格建议。</span>
+              </span>
+              <span class="topic-en">Personal Style Analysis</span>
+              <span class="topic-ja">パーソナルスタイル診断</span>
+            </h2>
+          </a>
+          <div class="carousel" aria-hidden="true">
+            <div class="cover-track" data-folder="hair-covers" data-prefix="hair" data-count="36"></div>
+          </div>
+        </article>
       </section>
     </main>
-
-    <script src="analytics.js"></script>
-    <script src="app.js"></script>
     <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("service-worker.js").catch(() => {});
-        });
-      }
+      document.querySelectorAll(".cover-track").forEach((track) => {
+        const folder = track.dataset.folder;
+        const prefix = track.dataset.prefix;
+        const count = Number(track.dataset.count);
+        let covers = [];
+
+        const shuffle = () => {
+          covers = Array.from({ length: count }, (_, index) => index + 1);
+
+          for (let index = covers.length - 1; index > 0; index -= 1) {
+            const randomIndex = Math.floor(Math.random() * (index + 1));
+            [covers[index], covers[randomIndex]] = [covers[randomIndex], covers[index]];
+          }
+        };
+
+        const render = () => {
+          track.innerHTML = covers
+            .map((index) => {
+            const number = String(index).padStart(2, "0");
+            return `<img src="${folder}/${prefix}${number}.webp" alt="" loading="lazy" onerror="this.remove()" />`;
+            })
+            .join("");
+        };
+
+        const playRound = () => {
+          shuffle();
+          render();
+          track.getAnimations().forEach((animation) => animation.cancel());
+
+          const distance = Math.max(track.scrollWidth - track.parentElement.clientWidth, 0);
+          const duration = Math.max(18000, count * 1400);
+
+          if (!distance || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+          const animation = track.animate(
+            [
+              { transform: "translateX(0)" },
+              { transform: `translateX(-${distance}px)` }
+            ],
+            {
+              duration,
+              easing: "linear",
+              fill: "forwards"
+            }
+          );
+
+          animation.addEventListener("finish", playRound, { once: true });
+        };
+
+        playRound();
+      });
     </script>
   </body>
 </html>
