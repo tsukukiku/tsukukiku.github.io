@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>星运占台 | Star Style Studio | 星運占い屋</title>
+    <title>星运占台：幸运站台 | Star Style Studio：Lucky Site | 星運占屋：ラッキーサイト</title>
     <meta
       name="description"
-      content="星运占台 Star Style Studio 星運占い屋：星座运势分析 Horoscope Analysis、手相命运分析 Palm Reading & Fate Analysis、个人形象设计 Personal Style Analysis。"
+      content="星运占台：幸运站台 Star Style Studio：Lucky Site 星運占屋：ラッキーサイト：星座运势分析 Horoscope Analysis、手相命运分析 Palm Reading & Fate Analysis、个人形象设计 Personal Style Analysis。"
     />
     <style>
       :root {
@@ -101,6 +101,13 @@
         margin: 0;
       }
 
+      .title-dim {
+        display: inline-block;
+        font-size: 0.5em;
+        opacity: 0.5;
+        font-weight: 650;
+      }
+
       .title-en,
       .title-ja {
         margin: 0;
@@ -169,15 +176,29 @@
       }
 
       .portal-card:nth-child(1) {
-        background: linear-gradient(135deg, rgba(54, 84, 146, 0.54), rgba(20, 24, 34, 0.7));
+        background: linear-gradient(135deg, rgba(84, 122, 198, 0.7), rgba(52, 64, 94, 0.78));
       }
 
       .portal-card:nth-child(2) {
-        background: linear-gradient(135deg, rgba(126, 199, 189, 0.3), rgba(20, 24, 34, 0.72));
+        background: linear-gradient(135deg, rgba(150, 222, 212, 0.48), rgba(56, 76, 86, 0.78));
       }
 
       .portal-card:nth-child(3) {
-        background: linear-gradient(135deg, rgba(217, 135, 155, 0.34), rgba(20, 24, 34, 0.72));
+        background: linear-gradient(135deg, rgba(226, 197, 156, 0.92), rgba(197, 165, 124, 0.86));
+        color: #332a24;
+      }
+
+      .portal-card:nth-child(3) .portal-link {
+        color: #332a24;
+      }
+
+      .portal-card:nth-child(3) .subtitle,
+      .portal-card:nth-child(3) h2 .topic-ja {
+        color: #7f6750;
+      }
+
+      .portal-card:nth-child(3) h2 .topic-en {
+        color: #b76764;
       }
 
       .portal-link {
@@ -261,6 +282,13 @@
         background: rgba(255, 255, 255, 0.06);
       }
 
+      .site-footer {
+        margin-top: 28px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.92rem;
+      }
+
       @media (max-width: 920px) {
         header {
           grid-template-columns: 1fr;
@@ -292,9 +320,9 @@
         <div>
           <p class="eyebrow">Divination & Style Portal</p>
           <div class="title-stack">
-            <h1>星运占台</h1>
-            <p class="title-en">Star Style Studio</p>
-            <p class="title-ja">星運占い屋</p>
+            <h1>星运占台<span class="title-dim">：幸运站台</span></h1>
+            <p class="title-en">Star Style Studio<span class="title-dim">：Lucky Site</span></p>
+            <p class="title-ja">星運占屋<span class="title-dim">：ラッキーサイト</span></p>
           </div>
           <p class="lead">请选择一个主题进入。</p>
         </div>
@@ -354,6 +382,7 @@
           </div>
         </article>
       </section>
+      <footer class="site-footer">Email: openclawtellme(at)gmail.com</footer>
     </main>
     <script>
       document.querySelectorAll(".cover-track").forEach((track) => {
