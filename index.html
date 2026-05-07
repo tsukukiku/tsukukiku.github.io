@@ -1,442 +1,81 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>星运占台：幸运站台 | Star Style Studio：Lucky Site | 星運占屋：ラッキーサイト</title>
-    <meta
-      name="description"
-      content="星运占台：幸运站台 Star Style Studio：Lucky Site 星運占屋：ラッキーサイト：星座运势分析 Horoscope Analysis、手相命运分析 Palm Reading & Fate Analysis、个人形象设计 Personal Style Analysis。"
-    />
-    <style>
-      :root {
-        color-scheme: dark;
-        --bg: #10131b;
-        --panel: rgba(20, 24, 34, 0.72);
-        --line: rgba(255, 255, 255, 0.16);
-        --text: #f7f3ea;
-        --muted: #b9c0ce;
-        --gold: #e5b765;
-        --aqua: #7ec7bd;
-        --rose: #d9879b;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        color: var(--text);
-        position: relative;
-        background: #10131b;
-        font-family:
-          "Microsoft YaHei",
-          "PingFang SC",
-          "Hiragino Sans",
-          "Yu Gothic",
-          system-ui,
-          sans-serif;
-      }
-
-      body::before {
-        position: fixed;
-        inset: 0;
-        z-index: -2;
-        content: "";
-        background:
-          linear-gradient(135deg, rgba(13, 17, 25, 0.36), rgba(34, 25, 35, 0.42)),
-          url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Milky_Way_and_starry_night_sky_%2826972689115%29.jpg?width=2560") center / cover no-repeat;
-        filter: brightness(0.60) saturate(1.12);
-      }
-
-      body::after {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        content: "";
-        background:
-          radial-gradient(circle at 10% 0%, rgba(126, 199, 189, 0.18), transparent 34rem),
-          radial-gradient(circle at 90% 20%, rgba(217, 135, 155, 0.16), transparent 30rem);
-        pointer-events: none;
-      }
-
-      main {
-        width: min(1220px, calc(100% - 32px));
-        margin: 0 auto;
-        padding: 42px 0 56px;
-      }
-
-      header {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
-        gap: 28px;
-        align-items: end;
-        margin-bottom: 28px;
-      }
-
-      .eyebrow {
-        margin: 0 0 10px;
-        color: var(--gold);
-        font-size: 0.84rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      h1 {
-        margin: 0 0 12px;
-        font-size: clamp(2.6rem, 8vw, 5.8rem);
-        line-height: 0.96;
-      }
-
-      .title-stack {
-        display: grid;
-        gap: 10px;
-        margin-bottom: 18px;
-      }
-
-      .title-stack h1 {
-        margin: 0;
-      }
-
-      .title-dim {
-        display: inline-block;
-        font-size: 0.5em;
-        opacity: 0.5;
-        font-weight: 650;
-      }
-
-      .title-en,
-      .title-ja {
-        margin: 0;
-        color: var(--muted);
-        font-weight: 700;
-        letter-spacing: 0.02em;
-      }
-
-      .title-en {
-        color: var(--aqua);
-        font-size: clamp(1.35rem, 3vw, 2.2rem);
-      }
-
-      .title-ja {
-        color: var(--gold);
-        font-size: clamp(1.05rem, 2.3vw, 1.65rem);
-      }
-
-      .lead {
-        max-width: 760px;
-        margin: 0;
-        color: var(--muted);
-        font-size: 1.05rem;
-        line-height: 1.8;
-      }
-
-      .slogan {
-        border-left: 1px solid rgba(229, 183, 101, 0.42);
-        padding-left: 24px;
-      }
-
-      .slogan p {
-        margin: 0 0 10px;
-        color: var(--text);
-        font-size: clamp(1rem, 2vw, 1.28rem);
-        font-weight: 700;
-        line-height: 1.65;
-      }
-
-      .slogan p:last-child {
-        margin-bottom: 0;
-      }
-
-      .slogan .slogan-en {
-        color: var(--aqua);
-      }
-
-      .slogan .slogan-ja {
-        color: var(--gold);
-      }
-
-      .portal-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .portal-card {
-        min-width: 0;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        background: var(--panel);
-        backdrop-filter: blur(12px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
-      }
-
-      .portal-card:nth-child(1) {
-        background: linear-gradient(135deg, rgba(84, 122, 198, 0.7), rgba(52, 64, 94, 0.78));
-      }
-
-      .portal-card:nth-child(2) {
-        background: linear-gradient(135deg, rgba(150, 222, 212, 0.48), rgba(56, 76, 86, 0.78));
-      }
-
-      .portal-card:nth-child(3) {
-        background: linear-gradient(135deg, rgba(226, 197, 156, 0.92), rgba(197, 165, 124, 0.86));
-        color: #332a24;
-      }
-
-      .portal-card:nth-child(3) .portal-link {
-        color: #332a24;
-      }
-
-      .portal-card:nth-child(3) .subtitle,
-      .portal-card:nth-child(3) h2 .topic-ja {
-        color: #7f6750;
-      }
-
-      .portal-card:nth-child(3) h2 .topic-en {
-        color: #b76764;
-      }
-
-      .portal-link {
-        display: block;
-        padding: 22px 22px 18px;
-        color: var(--text);
-        text-decoration: none;
-      }
-
-      .portal-link:hover h2,
-      .portal-link:focus-visible h2 {
-        color: var(--gold);
-      }
-
-      .portal-link:focus-visible {
-        outline: 2px solid var(--gold);
-        outline-offset: -2px;
-      }
-
-      h2 {
-        margin: 0 0 8px;
-        font-size: clamp(1.35rem, 3vw, 2rem);
-        line-height: 1.25;
-      }
-
-      .topic-title-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0 2ch;
-        align-items: baseline;
-      }
-
-      h2 span {
-        display: block;
-      }
-
-      h2 .topic-en {
-        margin-top: 4px;
-        color: var(--aqua);
-        font-size: 0.82em;
-      }
-
-      h2 .topic-ja {
-        margin-top: 2px;
-        color: var(--gold);
-        font-size: 0.74em;
-      }
-
-      .subtitle {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.52em;
-        font-weight: 500;
-        line-height: 1.65;
-      }
-
-      .carousel {
-        position: relative;
-        overflow: hidden;
-        border-top: 1px solid var(--line);
-      }
-
-      .cover-track {
-        display: flex;
-        width: max-content;
-        gap: 12px;
-        padding: 16px;
-        will-change: transform;
-      }
-
-      .portal-card:hover .cover-track {
-        animation-play-state: paused;
-      }
-
-      .cover-track img {
-        width: 124px;
-        aspect-ratio: 2 / 3;
-        object-fit: cover;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .site-footer {
-        margin-top: 28px;
-        color: var(--muted);
-        text-align: center;
-        font-size: 0.92rem;
-      }
-
-      @media (max-width: 920px) {
-        header {
-          grid-template-columns: 1fr;
-          align-items: start;
-        }
-
-        .slogan {
-          border-left: 0;
-          border-top: 1px solid rgba(229, 183, 101, 0.42);
-          padding-top: 18px;
-          padding-left: 0;
-        }
-
-        .cover-track img {
-          width: 113px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .cover-track {
-          animation: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <header>
-        <div>
-          <p class="eyebrow">Divination & Style Portal</p>
-          <div class="title-stack">
-            <h1>星运占台<span class="title-dim">：幸运站台</span></h1>
-            <p class="title-en">Star Style Studio<span class="title-dim">：Lucky Site</span></p>
-            <p class="title-ja">星運占屋<span class="title-dim">：ラッキーサイト</span></p>
-          </div>
-          <p class="lead">请选择一个主题进入。</p>
-        </div>
-        <div class="slogan" aria-label="网站口号">
-          <p>了解命运，探索可能，优化未来</p>
-          <p class="slogan-en">Understand your destiny, explore possibilities, and shape your future.</p>
-          <p class="slogan-ja">運命を理解し、可能性を探り、未来をより良くする</p>
-        </div>
-      </header>
-
-      <section class="portal-grid" aria-label="站点入口">
-        <article class="portal-card">
-          <a class="portal-link" href="zodiac/">
-            <h2>
-              <span class="topic-title-row">
-                <span>星座运势分析</span>
-                <span class="subtitle">十二星座月运势与精美运势解说卡。</span>
-              </span>
-              <span class="topic-en">Horoscope Analysis</span>
-              <span class="topic-ja">占星術リーディング（星座）</span>
-            </h2>
-          </a>
-          <div class="carousel" aria-hidden="true">
-            <div class="cover-track" data-folder="zodiac-covers" data-prefix="Zodiac" data-count="37"></div>
-          </div>
-        </article>
-
-        <article class="portal-card">
-          <a class="portal-link" href="palm/">
-            <h2>
-              <span class="topic-title-row">
-                <span>手相命运分析</span>
-                <span class="subtitle">掌纹、手型与个人特质分析。</span>
-              </span>
-              <span class="topic-en">Palm Reading &amp; Fate Analysis</span>
-              <span class="topic-ja">手相鑑定</span>
-            </h2>
-          </a>
-          <div class="carousel" aria-hidden="true">
-            <div class="cover-track" data-folder="palm-covers" data-prefix="palm" data-count="25"></div>
-          </div>
-        </article>
-
-        <article class="portal-card">
-          <a class="portal-link" href="hair/">
-            <h2>
-              <span class="topic-title-row">
-                <span>个人形象设计</span>
-                <span class="subtitle">脸型、气质与发型风格建议。</span>
-              </span>
-              <span class="topic-en">Personal Style Analysis</span>
-              <span class="topic-ja">パーソナルスタイル診断</span>
-            </h2>
-          </a>
-          <div class="carousel" aria-hidden="true">
-            <div class="cover-track" data-folder="hair-covers" data-prefix="hair" data-count="36"></div>
-          </div>
-        </article>
-      </section>
-      <footer class="site-footer">Email: openclawtellme(at)gmail.com</footer>
-    </main>
-    <script src="/analytics.js"></script>
-    <script>
-      document.querySelectorAll(".cover-track").forEach((track) => {
-        const folder = track.dataset.folder;
-        const prefix = track.dataset.prefix;
-        const count = Number(track.dataset.count);
-        let covers = [];
-
-        const shuffle = () => {
-          covers = Array.from({ length: count }, (_, index) => index + 1);
-
-          for (let index = covers.length - 1; index > 0; index -= 1) {
-            const randomIndex = Math.floor(Math.random() * (index + 1));
-            [covers[index], covers[randomIndex]] = [covers[randomIndex], covers[index]];
-          }
-        };
-
-        const render = () => {
-          track.innerHTML = covers
-            .map((index) => {
-            const number = String(index).padStart(2, "0");
-            return `<img src="${folder}/${prefix}${number}.webp" alt="" loading="lazy" onerror="this.remove()" />`;
-            })
-            .join("");
-        };
-
-        const playRound = () => {
-          shuffle();
-          render();
-          track.getAnimations().forEach((animation) => animation.cancel());
-
-          const distance = Math.max(track.scrollWidth - track.parentElement.clientWidth, 0);
-          const duration = Math.max(18000, count * 1400);
-
-          if (!distance || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-          const animation = track.animate(
-            [
-              { transform: "translateX(0)" },
-              { transform: `translateX(-${distance}px)` }
-            ],
-            {
-              duration,
-              easing: "linear",
-              fill: "forwards"
-            }
-          );
-
-          animation.addEventListener("finish", playRound, { once: true });
-        };
-
-        playRound();
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>星运占台：幸运站台 | Star Style Studio: Lucky Site | 星運占屋：ラッキーサイト</title>
+  <meta name="description" content="星运占台：幸运站台 / Star Style Studio: Lucky Site / 星運占屋：ラッキーサイト。星座运势、手相命运、个人形象分析入口。" />
+  <style>
+    :root { color-scheme: light; --ink:#211b23; --muted:#665d66; --line:rgba(93,74,59,.22); }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; color:var(--ink); font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; background: linear-gradient(135deg,#d7c8ad,#b9c5d6 46%,#d4b4b9); }
+    main { width:min(1120px, calc(100% - 28px)); margin:0 auto; padding:42px 0 34px; }
+    .hero { text-align:center; margin-bottom:28px; }
+    .hero h1 { margin:0; font-size:clamp(2.2rem, 7vw, 4.8rem); line-height:1.05; }
+    .hero p { margin:.5rem 0 0; color:var(--muted); font-weight:700; }
+    .title-dim { opacity:.5; font-size:.5em; font-weight:650; }
+    .lang-row { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:18px 0 0; }
+    .lang-row a { padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(246,238,224,.72); color:var(--ink); text-decoration:none; font-weight:800; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+    .card { min-height:390px; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:rgba(231,220,204,.82); box-shadow:0 22px 62px rgba(61,43,56,.26); text-decoration:none; color:var(--ink); }
+    .card:nth-child(1) { background:linear-gradient(160deg,rgba(224,218,207,.9),rgba(176,193,210,.94)); }
+    .card:nth-child(2) { background:linear-gradient(160deg,rgba(224,211,183,.94),rgba(183,197,211,.9)); }
+    .card:nth-child(3) { background:linear-gradient(160deg,rgba(202,178,139,.94),rgba(190,151,128,.92)); }
+    .copy { padding:24px; }
+    .copy h2 { margin:0; font-size:clamp(1.55rem,3vw,2.35rem); }
+    .copy p { margin:.45rem 0 0; color:var(--muted); font-weight:800; }
+    .enter { display:inline-flex; margin-top:18px; padding:9px 14px; border-radius:999px; background:rgba(33,27,35,.88); color:white; font-weight:900; }
+    .covers { height:172px; overflow:hidden; border-top:1px solid var(--line); background:rgba(222,209,190,.58); }
+    .track { display:flex; gap:8px; animation:slide 46s linear infinite; padding:10px; width:max-content; }
+    .track img { height:148px; width:102px; object-fit:cover; border-radius:8px; box-shadow:0 8px 18px rgba(0,0,0,.16); background:rgba(255,255,255,.35); }
+    .card:hover .track { animation-play-state:paused; }
+    footer { text-align:center; color:var(--muted); font-weight:700; margin-top:24px; }
+    @keyframes slide { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @media(max-width:860px) { .grid { grid-template-columns:1fr; } .card { min-height:330px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>星运占台<span class="title-dim">：幸运站台</span></h1>
+      <p>Star Style Studio<span class="title-dim">: Lucky Site</span></p>
+      <p>星運占屋<span class="title-dim">：ラッキーサイト</span></p>
+      <div class="lang-row">
+        <a href="cn/index.html">CN 简体</a>
+        <a href="en/index.html">EN</a>
+        <a href="ja/index.html">JA 日本語</a>
+        <a href="ko/index.html">KO 한국어</a>
+        <a href="zh/index.html">ZH 繁體</a>
+      </div>
+    </section>
+    <section class="grid">
+      <a class="card" href="zodiac/index.html">
+        <div class="copy"><h2>星座运势分析</h2><p>Horoscope Analysis / 占星術リーディング</p><span class="enter">进入 / Enter</span></div>
+        <div class="covers"><div class="track" data-folder="zodiac-covers" data-prefix="Zodiac" data-count="37"></div></div>
+      </a>
+      <a class="card" href="palm/index.html">
+        <div class="copy"><h2>手相命运分析</h2><p>Palm Reading & Fate Analysis / 手相鑑定</p><span class="enter">进入 / Enter</span></div>
+        <div class="covers"><div class="track" data-folder="palm-covers" data-prefix="palm" data-count="25"></div></div>
+      </a>
+      <a class="card" href="hair/index.html">
+        <div class="copy"><h2>个人形象分析</h2><p>Personal Style Analysis / パーソナルスタイル診断</p><span class="enter">进入 / Enter</span></div>
+        <div class="covers"><div class="track" data-folder="hair-covers" data-prefix="hair" data-count="36"></div></div>
+      </a>
+    </section>
+    <footer>Email: openclawtellme(at)gmail.com</footer>
+  </main>
+  <script src="/analytics.js"></script>
+  <script>
+    document.querySelectorAll('.track').forEach((track) => {
+      const folder = track.dataset.folder;
+      const prefix = track.dataset.prefix;
+      const count = Number(track.dataset.count || 0);
+      const build = () => Array.from({ length: count }, (_, index) => {
+        const number = String(index + 1).padStart(2, '0');
+        return '<img src="' + folder + '/' + prefix + number + '.webp" alt="" loading="lazy" onerror="this.remove()" />';
+      }).join('');
+      track.innerHTML = build() + build();
+    });
+  </script>
+</body>
 </html>
