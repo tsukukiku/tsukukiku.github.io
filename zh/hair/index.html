@@ -6,7 +6,7 @@
     <title>個人形象分析 | Personal Style Analysis</title>
     <meta
       name="description"
-      content="上传清晰头像照片，选择性别与年龄段，生成个人发型分析与形象建议。"
+      content="上傳清晰頭像照片，選擇性別與年齡段，生成個人髮型分析與形象建議。"
     />
     <style>
       :root {
@@ -584,10 +584,10 @@
     <main>
       <header class="topbar">
         <nav class="home-links" aria-label="homepage links">
-          <a href="../index.html">????</a>
+          <a href="../index.html">Home</a>
         </nav>
         <div class="site-title">
-          <strong>个人形象分析</strong>
+          <strong>個人形象分析</strong>
           <span>Personal Style Analysis</span>
           <span>パーソナルスタイル診断</span>
         </div>
@@ -597,13 +597,13 @@
       <section class="workspace">
         <form class="upload-card" id="hairForm">
           <label class="upload-box">
-            <strong>上传清晰头像照片</strong>
-            <span>支持 JPG / PNG / WebP，建议正面、光线充足、露出脸型与当前发型。</span>
+            <strong>上傳清晰頭像照片</strong>
+            <span>支援 JPG / PNG / WebP，建議正面、光線充足、露出臉型與目前髮型。</span>
             <input id="hairFile" type="file" accept="image/png,image/jpeg,image/webp" />
           </label>
 
           <div class="control-group">
-            <label>选择性别</label>
+            <label>選擇性別</label>
             <div class="segmented">
               <label><input type="radio" name="gender" value="female" checked /><span>女性</span></label>
               <label><input type="radio" name="gender" value="male" /><span>男性</span></label>
@@ -612,7 +612,7 @@
           </div>
 
           <div class="control-group">
-            <label>大概年龄</label>
+            <label>大概年齡</label>
             <div class="age-grid" id="ageGrid">
               <label><input type="radio" name="ageRange" value="15-" /><span>15-</span></label>
               <label><input type="radio" name="ageRange" value="20" /><span>20</span></label>
@@ -634,47 +634,47 @@
           </div>
 
           <button id="submitButton" type="submit" disabled>提交照片分析</button>
-          <p class="status" id="statusText">请先上传头像照片。</p>
+          <p class="status" id="statusText">請先上傳頭像照片。</p>
           <p class="task-id" id="taskIdText"></p>
 
-          <p class="notice">输入口令后，AI 会先返回文字分析，随后生成个人发型分析与形象建议海报。图片仅用于本次分析，不用于身份识别。</p>
+          <p class="notice">輸入口令後，AI 會先返回文字分析，隨後生成個人髮型分析與形象建議海報。圖片僅用於本次分析，不用於身分識別。</p>
         </form>
 
         <div class="preview-stage">
           <div class="uploaded-preview">
-            <img id="hairPreview" alt="头像照片预览" hidden />
-            <span class="small" id="previewHint">上传后在这里预览头像</span>
+            <img id="hairPreview" alt="頭像照片預覽" hidden />
+            <span class="small" id="previewHint">上傳後在這裡預覽頭像</span>
           </div>
-          <div class="showcase-slider" aria-label="发型分析示例轮播">
+          <div class="showcase-slider" aria-label="髮型分析範例輪播">
             <div class="showcase-track">
-              <div class="showcase-slide"><img src="showcase/hair-showcase-01a.jpg" alt="发型分析海报示例 1" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-02a.jpg" alt="发型分析海报示例 2" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-03a.jpg" alt="发型分析海报示例 3" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-04a.jpg" alt="发型分析海报示例 4" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-01a.jpg" alt="发型分析海报示例 1" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-02a.jpg" alt="发型分析海报示例 2" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-03a.jpg" alt="发型分析海报示例 3" loading="lazy" /></div>
-              <div class="showcase-slide"><img src="showcase/hair-showcase-04a.jpg" alt="发型分析海报示例 4" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-01a.jpg" alt="髮型分析海報範例 1" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-02a.jpg" alt="髮型分析海報範例 2" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-03a.jpg" alt="髮型分析海報範例 3" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-04a.jpg" alt="髮型分析海報範例 4" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-01a.jpg" alt="髮型分析海報範例 1" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-02a.jpg" alt="髮型分析海報範例 2" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-03a.jpg" alt="髮型分析海報範例 3" loading="lazy" /></div>
+              <div class="showcase-slide"><img src="showcase/hair-showcase-04a.jpg" alt="髮型分析海報範例 4" loading="lazy" /></div>
             </div>
           </div>
         </div>
       </section>
 
       <section class="status-panel" id="statusPanel" hidden>
-        <strong>任务状态：<span id="taskStatusLabel">等待提交</span></strong>
-        <div class="progress" aria-label="处理进度">
-          <div class="step" data-step="queued">排队中</div>
+        <strong>任務狀態：<span id="taskStatusLabel">等待提交</span></strong>
+        <div class="progress" aria-label="處理进度">
+          <div class="step" data-step="queued">排隊中</div>
           <div class="step" data-step="processing">分析中</div>
           <div class="step" data-step="text_ready">文字完成</div>
-          <div class="step" data-step="rendering">生成海报</div>
-          <div class="step" data-step="ready">可以下载</div>
+          <div class="step" data-step="rendering">生成海報</div>
+          <div class="step" data-step="ready">可以下載</div>
         </div>
       </section>
 
       <section class="result-panel" id="resultPanel" hidden>
         <div class="section-title">
-          <h2>个人发型分析与形象建议</h2>
-          <span class="small title-note">先显示文字版解说</span>
+          <h2>個人髮型分析與形象建議</h2>
+          <span class="small title-note">先顯示文字版解說</span>
         </div>
         <div class="result-grid" id="summaryGrid"></div>
         <div class="style-board" id="styleBoard"></div>
@@ -682,14 +682,14 @@
 
       <section class="poster-panel" id="posterPanel" hidden>
         <div class="section-title">
-          <h2>形象建议海报</h2>
+          <h2>形象建議海報</h2>
           <div class="poster-actions">
-            <span class="countdown" id="countdownText">等待海报生成</span>
-            <a class="download-button is-disabled" id="downloadPoster" href="#" download="hair-style-analysis.png">下载形象建议图</a>
+            <span class="countdown" id="countdownText">等待海報生成</span>
+            <a class="download-button is-disabled" id="downloadPoster" href="#" download="hair-style-analysis.png">下載形象建議圖</a>
           </div>
         </div>
         <div class="poster-preview" id="posterPreview">
-          <span class="small">海报生成中，请稍候。</span>
+          <span class="small">海報生成中，請稍候。</span>
         </div>
       </section>
     </main>
@@ -716,13 +716,13 @@
 
       const MAX_SIZE = 10 * 1024 * 1024;
       const REQUIRED_CODE = `${"HA"}${"IR"}`;
-      const HAIR_PROMPT = `你是一名优秀的个人形象设计师和发型设计师。请根据用户上传的头像照片、性别和年龄段，从实际情况和时尚角度判断，对用户现有发型与整体形象做出中肯评判，并制作“个人发型分析与形象建议”。必须使用简体中文。输出 JSON。内容包括：1. 脸型分析；2. 发质特征；3. 气质定位；4. 核心策略；5. 发型总体建议五条；6. 适合场景四类，每类带图标；7. 第一类“最适合”，重点推荐第1、2、3、4种发型，并为每种发型描述正面与偏右45度真人发型照；8. 第二类“可尝试”，推荐第1、2、3、4种发型，并为每种发型描述正面与偏右45度真人发型照；9. 第三类“避坑发型”，不建议第1、2、3、4种发型，并为每种发型描述正面与偏右45度真人发型照；10. 日常打理建议三条；11. 理发美发沟通关键词4-6个；12. 整体方向总结，格式为“以……为核心，建议采用……，通过……提升气质与减龄感。”；13. 形象提升方向，如更年轻、更知性、更显脸小、更易打理；14. 底部小贴士，说明多久修剪一次、保持什么状态、使用什么发品为佳。制图时参考模板，允许适当调整，但三大类与12种发型图示必须存在。`;
+      const HAIR_PROMPT = `你是一名優秀的個人形象設計師和髮型設計師。請根據使用者上傳的頭像照片、性別和年齡段，從實際情況和時尚角度判斷，對使用者現有髮型與整體形象做出中肯評判，並製作“個人髮型分析與形象建議”。必須使用繁體中文。輸出 JSON。內容包括：1. 臉型分析；2. 髮質特徵；3. 氣質定位；4. 核心策略；5. 髮型總體建議五條；6. 適合場景四類，每類帶圖標；7. 第一類“最適合”，重點推薦第1、2、3、4種髮型，並為每種髮型描述正面與偏右45度真人髮型照；8. 第二類“可嘗試”，推薦第1、2、3、4種髮型，並為每種髮型描述正面與偏右45度真人髮型照；9. 第三類“避坑髮型”，不建議第1、2、3、4種髮型，並為每種髮型描述正面與偏右45度真人髮型照；10. 日常打理建議三條；11. 理髮美髮溝通關鍵詞4-6個；12. 整體方向總結，格式為“以……為核心，建議採用……，透過……提升氣質與減齡感。”；13. 形象提升方向，如更年輕、更知性、更顯臉小、更易打理；14. 底部小提示，說明多久修剪一次、保持什麼狀態、使用什麼髮品為佳。製圖時參考模板，允許適當調整，但三大類與12種髮型圖示必須存在。`;
 
-      const SUMMARY_TITLES = ["脸型分析", "发质特征", "气质定位", "核心策略", "发型总体建议", "适合场景", "日常打理建议", "整体方向总结"];
+      const SUMMARY_TITLES = ["臉型分析", "髮質特徵", "氣質定位", "核心策略", "髮型總體建議", "適合場景", "日常打理建議", "整體方向總結"];
       const CATEGORY_KEYS = [
-        { key: "最适合", title: "最适合（重点推荐）" },
-        { key: "可尝试", title: "可尝试（风格延伸）" },
-        { key: "避坑发型", title: "避坑发型（不建议）" }
+        { key: "最適合", title: "最適合（重點推薦）" },
+        { key: "可嘗試", title: "可嘗試（風格延伸）" },
+        { key: "避坑髮型", title: "避坑髮型（不建議）" }
       ];
 
       const hairFile = document.querySelector("#hairFile");
@@ -758,7 +758,7 @@
         if (!file) {
           uploadedFile = null;
           submitButton.disabled = true;
-          statusText.textContent = "请先上传头像照片。";
+          statusText.textContent = "請先上傳頭像照片。";
           previewHint.hidden = false;
           return;
         }
@@ -768,7 +768,7 @@
           submitButton.disabled = true;
           hairPreview.hidden = true;
           previewHint.hidden = false;
-          statusText.textContent = "图片超过 10MB，请压缩后重新上传。";
+          statusText.textContent = "圖片超過 10MB，請壓縮後重新上傳。";
           return;
         }
 
@@ -779,7 +779,7 @@
         hairPreview.hidden = false;
         previewHint.hidden = true;
         submitButton.disabled = false;
-        statusText.textContent = "头像已载入，请选择性别、年龄，并输入口令。";
+        statusText.textContent = "頭像已載入，請選擇性別、年齡，並輸入口令。";
       });
 
       hairForm.addEventListener("submit", async (event) => {
@@ -787,22 +787,22 @@
         if (!uploadedFile || submitButton.disabled) return;
 
         if (accessCode.value.trim().toUpperCase() !== REQUIRED_CODE) {
-          statusText.textContent = "口令不正确，请确认后再提交。";
+          statusText.textContent = "口令不正確，請確認後再提交。";
           return;
         }
 
         submitButton.disabled = true;
         statusPanel.hidden = false;
         setTaskStatus("queued");
-        statusText.textContent = "正在上传头像，请等待。";
+        statusText.textContent = "正在上傳頭像，請等待。";
         statusText.classList.add("is-loading");
         statusText.scrollIntoView({ behavior: "smooth", block: "center" });
 
         try {
           const submitResult = await submitTask();
           currentTaskId = submitResult.task_id;
-          taskIdText.textContent = currentTaskId ? `任务编号：${currentTaskId}` : "";
-          statusText.textContent = submitResult.message || "任务已提交，正在分析。";
+          taskIdText.textContent = currentTaskId ? `任務編號：${currentTaskId}` : "";
+          statusText.textContent = submitResult.message || "任務已提交，正在分析。";
           statusText.classList.remove("is-loading");
 
           if (submitResult.analysis || submitResult.sections) {
@@ -835,7 +835,7 @@
             mode: "cors"
           });
         } catch (error) {
-          throw new Error(`无法链接Server API：${error.message || "网络请求被浏览器阻止。"}`);
+          throw new Error(`無法連結Server API：${error.message || "網路請求被瀏覽器阻擋。"}`);
         }
 
         const text = await response.text();
@@ -866,7 +866,7 @@
             data = null;
           }
           if (!response.ok) throw new Error(data?.error || data?.message || text || `HTTP ${response.status}`);
-          if (!data) throw new Error("状态接口没有返回有效 JSON。");
+          if (!data) throw new Error("狀態介面没有返回有效 JSON。");
 
           setTaskStatus(data.status);
           statusText.textContent = data.message || statusText.textContent;
@@ -888,14 +888,14 @@
           }
 
           if (data.status === "failed" || data.status === "expired") {
-            statusText.textContent = data.message || "任务未能完成，请稍后重试。";
+            statusText.textContent = data.message || "任務未能完成，請稍後重試。";
             submitButton.disabled = false;
             return;
           }
 
           pollTimer = setTimeout(pollTask, data.status === "rendering" ? 3000 : 2500);
         } catch (error) {
-          statusText.textContent = `状态查询失败：${error.message || "请检查Server API是否可访问。"}`;
+          statusText.textContent = `狀態查詢失敗：${error.message || "請檢查Server API是否可存取。"}`;
           statusText.classList.remove("is-loading");
           setTaskStatus("failed");
           submitButton.disabled = false;
@@ -924,13 +924,13 @@
 
       function normalizeStyleList(value) {
         const source = Array.isArray(value) ? value : [];
-        const fallback = ["第1种发型", "第2种发型", "第3种发型", "第4种发型"];
+        const fallback = ["第1種髮型", "第2種髮型", "第3種髮型", "第4種髮型"];
         return fallback.map((title, index) => {
           const item = source[index];
-          if (typeof item === "string") return { title: item, body: "正面与偏右45度示意图生成中。" };
+          if (typeof item === "string") return { title: item, body: "正面與偏右45度示意圖生成中。" };
           return {
             title: item?.title || item?.name || title,
-            body: item?.body || item?.description || item?.reason || "正面与偏右45度示意图生成中。"
+            body: item?.body || item?.description || item?.reason || "正面與偏右45度示意圖生成中。"
           };
         });
       }
@@ -948,8 +948,8 @@
       function showPosterWaiting() {
         posterPanel.hidden = false;
         posterPanel.classList.add("is-waiting");
-        posterPreview.innerHTML = '<span class="small">海报制作中，请稍候。</span>';
-        countdownText.textContent = "海报制作中";
+        posterPreview.innerHTML = '<span class="small">海報製作中，請稍候。</span>';
+        countdownText.textContent = "海報製作中";
         downloadPoster.classList.add("is-disabled");
         downloadPoster.removeAttribute("href");
       }
@@ -958,10 +958,10 @@
         clearTimeout(pollTimer);
         posterPanel.hidden = false;
         posterPanel.classList.remove("is-waiting");
-        statusText.textContent = data.message || "分析完成，形象建议图已生成。";
+        statusText.textContent = data.message || "分析完成，形象建議圖已生成。";
 
         posterImageUrl = getResultImageUrl();
-        posterPreview.innerHTML = `<img src="${escapeAttribute(posterImageUrl)}" alt="个人发型分析与形象建议图" />`;
+        posterPreview.innerHTML = `<img src="${escapeAttribute(posterImageUrl)}" alt="個人髮型分析與形象建議圖" />`;
         startDownloadCountdown();
       }
 
@@ -976,13 +976,13 @@
       function setTaskStatus(status) {
         const normalizedStatus = status === "analyzing" ? "processing" : status;
         const labelMap = {
-          queued: "排队中",
+          queued: "排隊中",
           processing: "分析中",
           text_ready: "文字完成",
-          rendering: "生成海报",
-          ready: "可以下载",
-          failed: "失败",
-          expired: "已过期"
+          rendering: "生成海報",
+          ready: "可以下載",
+          failed: "失敗",
+          expired: "已過期"
         };
 
         taskStatusLabel.textContent = labelMap[normalizedStatus] || normalizedStatus;
@@ -997,16 +997,16 @@
         let seconds = 30;
         downloadPoster.classList.add("is-disabled");
         downloadPoster.removeAttribute("href");
-        countdownText.textContent = `${seconds} 秒后可下载`;
+        countdownText.textContent = `${seconds} 秒後可下載`;
         clearInterval(countdownTimer);
 
         countdownTimer = setInterval(() => {
           seconds -= 1;
-          countdownText.textContent = `${seconds} 秒后可下载`;
+          countdownText.textContent = `${seconds} 秒後可下載`;
 
           if (seconds <= 0) {
             clearInterval(countdownTimer);
-            countdownText.textContent = "可以下载";
+            countdownText.textContent = "可以下載";
             downloadPoster.classList.remove("is-disabled");
             downloadPoster.href = posterImageUrl;
           }
@@ -1016,9 +1016,9 @@
       function formatSubmitError(error) {
         const message = String(error?.message || "");
         if (message.includes("404")) {
-          return "提交失败：Server API 尚未部署 hair 接口。";
+          return "提交失敗：Server API 尚未部署 hair 介面。";
         }
-        return `提交失败：${message || "无法链接Server API，请检查域名、HTTPS、CORS 或 PHP 后端。"}`;
+        return `提交失敗：${message || "無法連結Server API，請檢查網域、HTTPS、CORS 或 PHP 後端。"}`;
       }
 
       function resetState() {
@@ -1033,8 +1033,8 @@
         posterPanel.hidden = true;
         summaryGrid.innerHTML = "";
         styleBoard.innerHTML = "";
-        posterPreview.innerHTML = '<span class="small">海报生成中，请稍候。</span>';
-        countdownText.textContent = "等待海报生成";
+        posterPreview.innerHTML = '<span class="small">海報生成中，請稍候。</span>';
+        countdownText.textContent = "等待海報生成";
         posterPanel.classList.remove("is-waiting");
         downloadPoster.classList.add("is-disabled");
         downloadPoster.removeAttribute("href");
