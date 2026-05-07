@@ -715,13 +715,15 @@
 
       const MAX_SIZE = 10 * 1024 * 1024;
       const REQUIRED_CODE = `${"HA"}${"IR"}`;
-      const HAIR_PROMPT = `あなたは優秀なパーソナルイメージコンサルタント兼ヘアスタイリストです。ユーザーがアップロードした顔写真、性別、年齢層をもとに、現在の髪型と全体イメージを実用面とファッション面から中立的に評価し、「髪型分析とイメージ改善アドバイス」を作成してください。必ず日本語で出力してください。JSON形式で返してください。内容には、1. 顔型分析、2. 髪質特徴、3. 雰囲気の方向性、4. コア戦略、5. 髪型全体アドバイス5項目、6. 適したシーン4種類とアイコン、7. 第一類「最適」、第1〜4候補の髪型を重点推薦し、それぞれ正面と右45度のリアルな髪型写真の要点を記述、8. 第二類「試す価値あり」、第1〜4候補の正面と右45度の要点、9. 第三類「避けたい髪型」、第1〜4候補の正面と右45度の要点、10. 日常スタイリングの助言3項目、11. 美容室で伝えるキーワード4〜6個、12. 全体方向のまとめ「……を軸に、……を採用し、……によって雰囲気と若々しさを高める。」、13. イメージ改善方向、例：より若々しく、より知的に、小顔に見せる、扱いやすくする等、14. 下部の小さなヒント：何週間ごとに整えるか、どの状態を保つか、どんなスタイリング剤が良いか、を含めてください。画像生成時はテンプレートを参考にしつつ調整可。ただし三大カテゴリと12種類の髪型図示は必ず入れてください。`;
+      const HAIR_LANGUAGE = "ja";
+      const HAIR_TEMPLATE_NAME = "hair-template-ja.jpg";
+      const HAIR_PROMPT = `あなたは優秀なパーソナルイメージコンサルタント兼ヘアスタイリストです。ユーザーがアップロードした顔写真、性別、年齢層をもとに、現在の髪型と全体印象を分析し、「個人ヘアスタイル分析とイメージ提案」を作成してください。日本語のみで JSON を返してください。3つの推薦カテゴリは各4種類、合計12種類の髪型図示を必ず含め、各髪型には正面と右45度のリアル写真要点を入れてください。`;
 
-      const SUMMARY_TITLES = ["顔型分析", "髪質特徴", "雰囲気の方向性", "コア戦略", "髪型全体アドバイス", "適したシーン", "日常スタイリング", "全体方向まとめ"];
+      const SUMMARY_TITLES = ["顔型分析","髪質特徴","雰囲気の方向性","コア戦略","髪型全体アドバイス","適したシーン","日常スタイリング","全体方向まとめ"];
       const CATEGORY_KEYS = [
         { key: "最適", title: "最適（重点おすすめ）" },
-        { key: "試す価値あり", title: "試す価値あり（スタイル展開）" },
-        { key: "避けたい髪型", title: "避けたい髪型（非推奨）" }
+        { key: "試してみたい", title: "試してみたい（スタイル拡張）" },
+        { key: "避けたいスタイル", title: "避けたいスタイル（非推奨）" }
       ];
 
       const hairFile = document.querySelector("#hairFile");
@@ -822,10 +824,11 @@
         formData.append("faceImage", uploadedFile);
         formData.append("gender", document.querySelector("input[name='gender']:checked")?.value || "neutral");
         formData.append("ageRange", document.querySelector("input[name='ageRange']:checked")?.value || "25");
+        formData.append("lang", HAIR_LANGUAGE);
+        formData.append("language", HAIR_LANGUAGE);
         formData.append("mode", REQUIRED_CODE);
         formData.append("analysisPrompt", HAIR_PROMPT);
-        formData.append("lang", "ja");
-        formData.append("templateName", "personal-hair-style-template.jpg");
+        formData.append("templateName", HAIR_TEMPLATE_NAME);
 
         let response;
         try {
