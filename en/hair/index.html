@@ -714,9 +714,11 @@
 
       const MAX_SIZE = 10 * 1024 * 1024;
       const REQUIRED_CODE = `${"HA"}${"IR"}`;
-      const HAIR_PROMPT = `You are an excellent personal image consultant and hairstylist. Based on the user uploaded portrait photo, gender, and age range, judge the current hairstyle and overall image from practical and fashion perspectives. Create a Personal Hairstyle Analysis & Image Advice report. Use English only. Return JSON. Include: 1. Face shape analysis; 2. Hair texture; 3. Style personality positioning; 4. Core strategy; 5. Five overall hairstyle recommendations; 6. Four suitable scenarios with icons; 7. Best styles, recommending styles 1, 2, 3, and 4, and describe front and right 45-degree realistic hairstyle photos for each; 8. Styles worth trying, recommending styles 1, 2, 3, and 4, and describe front and right 45-degree realistic hairstyle photos for each; 9. Styles to avoid, not recommending styles 1, 2, 3, and 4, and describe front and right 45-degree realistic hairstyle photos for each; 10. Three daily styling tips; 11. Four to six salon communication keywords; 12. Overall direction summary in this format: “With ... as the core, use ..., and improve temperament and a younger impression through ...”; 13. Image improvement direction, such as younger, more refined, slimmer-looking face, easier to maintain; 14. Bottom tip: how often to trim, what condition to maintain, and what styling products are best. For the poster, follow the template but adjust if needed. The three major recommendation groups and 12 hairstyle visuals must exist.`;
+      const HAIR_LANGUAGE = "en";
+      const HAIR_TEMPLATE_NAME = "hair-template-en.jpg";
+      const HAIR_PROMPT = `You are an excellent personal image consultant and hairstylist. Analyze the uploaded portrait photo together with the user gender and age range, then create a Personal Hairstyle Analysis & Image Advice report. Use English only and return JSON. The three recommendation groups must each include 4 hairstyles, 12 hairstyle visuals total; every style must include front and right 45-degree realistic photo briefs.`;
 
-      const SUMMARY_TITLES = ["Face Shape Analysis", "Hair Texture", "Style Personality", "Core Strategy", "Overall Hairstyle Advice", "Suitable Scenarios", "Daily Styling Tips", "Overall Direction Summary"];
+      const SUMMARY_TITLES = ["Face Shape Analysis","Hair Texture","Style Personality","Core Strategy","Overall Hairstyle Advice","Suitable Scenarios","Daily Styling Tips","Overall Direction Summary"];
       const CATEGORY_KEYS = [
         { key: "Best Styles", title: "Best Styles (Top Recommendations)" },
         { key: "Worth Trying", title: "Worth Trying (Style Extension)" },
@@ -821,10 +823,11 @@
         formData.append("faceImage", uploadedFile);
         formData.append("gender", document.querySelector("input[name='gender']:checked")?.value || "neutral");
         formData.append("ageRange", document.querySelector("input[name='ageRange']:checked")?.value || "25");
+        formData.append("lang", HAIR_LANGUAGE);
+        formData.append("language", HAIR_LANGUAGE);
         formData.append("mode", REQUIRED_CODE);
         formData.append("analysisPrompt", HAIR_PROMPT);
-        formData.append("lang", "en");
-        formData.append("templateName", "personal-hair-style-template.jpg");
+        formData.append("templateName", HAIR_TEMPLATE_NAME);
 
         let response;
         try {
