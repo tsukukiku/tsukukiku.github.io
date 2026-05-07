@@ -716,9 +716,11 @@
 
       const MAX_SIZE = 10 * 1024 * 1024;
       const REQUIRED_CODE = `${"HA"}${"IR"}`;
-      const HAIR_PROMPT = `你是一名優秀的個人形象設計師和髮型設計師。請根據使用者上傳的頭像照片、性別和年齡段，從實際情況和時尚角度判斷，對使用者現有髮型與整體形象做出中肯評判，並製作“個人髮型分析與形象建議”。必須使用繁體中文。輸出 JSON。內容包括：1. 臉型分析；2. 髮質特徵；3. 氣質定位；4. 核心策略；5. 髮型總體建議五條；6. 適合場景四類，每類帶圖標；7. 第一類“最適合”，重點推薦第1、2、3、4種髮型，並為每種髮型描述正面與偏右45度真人髮型照；8. 第二類“可嘗試”，推薦第1、2、3、4種髮型，並為每種髮型描述正面與偏右45度真人髮型照；9. 第三類“避坑髮型”，不建議第1、2、3、4種髮型，並為每種髮型描述正面與偏右45度真人髮型照；10. 日常打理建議三條；11. 理髮美髮溝通關鍵詞4-6個；12. 整體方向總結，格式為“以……為核心，建議採用……，透過……提升氣質與減齡感。”；13. 形象提升方向，如更年輕、更知性、更顯臉小、更易打理；14. 底部小提示，說明多久修剪一次、保持什麼狀態、使用什麼髮品為佳。製圖時參考模板，允許適當調整，但三大類與12種髮型圖示必須存在。`;
+      const HAIR_LANGUAGE = "zh";
+      const HAIR_TEMPLATE_NAME = "hair-template-zh.jpg";
+      const HAIR_PROMPT = `你是一名優秀的個人形象設計師和髮型設計師。請結合使用者上傳的頭像照片、性別、年齡段，判斷目前髮型與整體形象，並生成「個人髮型分析與形象建議」。必須使用繁體中文並返回 JSON。三大推薦區必須各有4種髮型，共12種髮型圖示；每種髮型都要包含正面真人照與偏右45度真人照要點。`;
 
-      const SUMMARY_TITLES = ["臉型分析", "髮質特徵", "氣質定位", "核心策略", "髮型總體建議", "適合場景", "日常打理建議", "整體方向總結"];
+      const SUMMARY_TITLES = ["臉型分析","髮質特徵","氣質定位","核心策略","髮型總體建議","適合場景","日常打理建議","整體方向總結"];
       const CATEGORY_KEYS = [
         { key: "最適合", title: "最適合（重點推薦）" },
         { key: "可嘗試", title: "可嘗試（風格延伸）" },
@@ -823,9 +825,11 @@
         formData.append("faceImage", uploadedFile);
         formData.append("gender", document.querySelector("input[name='gender']:checked")?.value || "neutral");
         formData.append("ageRange", document.querySelector("input[name='ageRange']:checked")?.value || "25");
+        formData.append("lang", HAIR_LANGUAGE);
+        formData.append("language", HAIR_LANGUAGE);
         formData.append("mode", REQUIRED_CODE);
         formData.append("analysisPrompt", HAIR_PROMPT);
-        formData.append("templateName", "personal-hair-style-template.jpg");
+        formData.append("templateName", HAIR_TEMPLATE_NAME);
 
         let response;
         try {
