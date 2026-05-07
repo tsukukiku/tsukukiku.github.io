@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>손금 운명 분석 | Palm Reading & Fate Analysis</title>
+    <meta
+      name="description"
+      content="손바닥 사진을 업로드하면 손금 운명 분석, 손금 해석 텍스트와 포스터 이미지를 생성합니다."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0c1018;
+        --panel: rgba(18, 23, 33, 0.8);
+        --line: rgba(255, 255, 255, 0.16);
+        --text: #f8f2e7;
+        --muted: #b8c0cf;
+        --gold: #e7bc6a;
+        --blue: #78bde8;
+        --rose: #e1889c;
+        --green: #abd66e;
+        --orange: #eba450;
+        --violet: #c499ee;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          linear-gradient(rgba(6, 10, 18, 0.42), rgba(6, 10, 18, 0.72)),
+          url("palm-bg.png") center top / cover fixed,
+          linear-gradient(135deg, #0c1018 0%, #171c29 48%, #211825 100%);
+        font-family:
+          "Microsoft YaHei",
+          "PingFang SC",
+          "Hiragino Sans",
+          "Yu Gothic",
+          system-ui,
+          sans-serif;
+      }
+
+      a {
+        color: var(--gold);
+      }
+
+      main {
+        width: min(1180px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 18px;
+        color: var(--muted);
+      }
+
+      .home-link {
+        color: var(--muted);
+        text-decoration: none;
+      }
+
+      .site-title {
+        text-align: center;
+      }
+
+      .site-title strong {
+        display: block;
+        color: var(--text);
+        font-size: clamp(1.8rem, 6.3vw, 3.06rem);
+        line-height: 1.15;
+      }
+
+      .site-title span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.97rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .top-quota {
+        min-width: 88px;
+        color: var(--gold);
+        font-weight: 800;
+        text-align: right;
+      }
+
+      .workspace,
+      .status-panel,
+      .result-panel,
+      .poster-panel {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.34);
+        backdrop-filter: blur(12px);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.86fr) minmax(0, 1.14fr);
+        gap: 20px;
+        padding: 22px;
+      }
+
+      .upload-card {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .upload-box {
+        display: grid;
+        gap: 10px;
+        place-items: center;
+        min-height: 154px;
+        border: 1px dashed rgba(231, 188, 106, 0.56);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 22px;
+        text-align: center;
+      }
+
+      .upload-box strong {
+        color: var(--gold);
+        font-size: 1.2rem;
+      }
+
+      .upload-box span {
+        font-size: 0.86rem;
+      }
+
+      .upload-box span,
+      .notice,
+      .small {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      input[type="file"] {
+        width: 100%;
+        min-height: 54px;
+        font-size: 1.05rem;
+      }
+
+      input[type="file"]::file-selector-button {
+        min-height: 44px;
+        margin-right: 12px;
+        border: 1px solid rgba(231, 188, 106, 0.72);
+        border-radius: 8px;
+        color: #151922;
+        background: var(--gold);
+        padding: 0 18px;
+        font: inherit;
+        font-weight: 800;
+      }
+
+      .secret-mode {
+        display: inline-grid;
+        grid-template-columns: auto 4.8rem;
+        gap: 8px;
+        align-items: center;
+        justify-self: start;
+        opacity: 0.42;
+      }
+
+      .secret-mode label {
+        color: var(--muted);
+        font-size: 0.76rem;
+        line-height: 1;
+      }
+
+      .secret-mode input {
+        width: 4.8rem;
+        min-height: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 6px;
+        color: var(--text);
+        background: rgba(8, 12, 20, 0.42);
+        padding: 0 7px;
+        font: 0.86rem ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+
+      button,
+      .download-button {
+        min-height: 46px;
+        border: 1px solid rgba(231, 188, 106, 0.72);
+        border-radius: 8px;
+        color: #151922;
+        background: var(--gold);
+        padding: 0 18px;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      button:disabled,
+      .download-button.is-disabled {
+        border-color: rgba(255, 255, 255, 0.14);
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.08);
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      .status {
+        min-height: 24px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .status.is-loading {
+        color: var(--gold);
+        font-weight: 800;
+        animation: statusPulse 0.9s ease-in-out infinite;
+      }
+
+      @keyframes statusPulse {
+        0%,
+        100% {
+          opacity: 0.45;
+        }
+
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .task-id {
+        overflow-wrap: anywhere;
+        margin: 0;
+        color: var(--gold);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 0.9rem;
+      }
+
+      .preview-stage {
+        position: relative;
+        min-height: 520px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: rgba(5, 8, 14, 0.5);
+      }
+
+      .preview-stage img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 520px;
+        object-fit: contain;
+      }
+
+      .status-panel,
+      .result-panel,
+      .poster-panel {
+        margin-top: 18px;
+        padding: 22px;
+      }
+
+      .progress {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .step {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+
+      .step.is-active {
+        border-color: rgba(231, 188, 106, 0.72);
+        color: var(--text);
+        background: rgba(231, 188, 106, 0.12);
+      }
+
+      .step.is-pulsing {
+        animation: statusPulse 0.9s ease-in-out infinite;
+      }
+
+      .section-title {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+      }
+
+      .result-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .result-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 16px;
+      }
+
+      .result-item h3 {
+        margin: 0 0 10px;
+        color: var(--gold);
+        font-size: 1rem;
+      }
+
+      .result-item p {
+        margin: 0;
+        color: #dfe7ef;
+        line-height: 1.75;
+      }
+
+      .bottom-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .bottom-grid .result-item:nth-child(1) h3 {
+        color: var(--violet);
+      }
+
+      .bottom-grid .result-item:nth-child(2) h3 {
+        color: var(--blue);
+      }
+
+      .bottom-grid .result-item:nth-child(3) h3 {
+        color: var(--green);
+      }
+
+      .bottom-grid .result-item:nth-child(4) h3 {
+        color: var(--orange);
+      }
+
+      .poster-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .poster-preview {
+        display: grid;
+        place-items: center;
+        min-height: 260px;
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      }
+
+      .poster-preview img {
+        display: block;
+        width: min(100%, 520px);
+        height: auto;
+      }
+
+      .countdown {
+        color: var(--gold);
+        font-weight: 800;
+      }
+
+      .poster-panel.is-waiting .countdown,
+      .poster-panel.is-waiting .poster-preview {
+        animation: statusPulse 0.9s ease-in-out infinite;
+      }
+
+      @media (max-width: 860px) {
+        .workspace,
+        .result-grid,
+        .bottom-grid,
+        .progress {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .top-quota {
+          text-align: center;
+        }
+
+        .preview-stage,
+        .preview-stage img {
+          min-height: 420px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="topbar">
+        <a class="home-link" href="../index.html">홈으로</a>
+        <div class="site-title">
+          <strong>손금 운명 분석</strong>
+          <span>Palm Reading & Fate Analysis</span>
+          <span>손금 분석</span>
+        </div>
+        <span class="top-quota">하루 3회 제한</span>
+      </div>
+
+      <section class="workspace">
+        <form class="upload-card" id="palmForm">
+          <label class="upload-box">
+            <strong>손바닥 사진 업로드</strong>
+            <span>JPG / PNG / WebP 지원. 이미지는 10MB 미만이어야 하며, 서버에서 자동 압축 후 분석에 제출합니다.</span>
+            <input id="palmFile" type="file" accept="image/png,image/jpeg,image/webp" />
+          </label>
+
+          <div class="secret-mode">
+            <label for="posterModeCode">접근 코드</label>
+            <input id="posterModeCode" type="password" inputmode="latin" autocomplete="off" aria-label="접근 코드" />
+          </div>
+
+          <button id="submitButton" type="submit" disabled>분석 작업 제출</button>
+          <p class="status" id="statusText">먼저 사진을 업로드하세요.</p>
+          <p class="task-id" id="taskIdText"></p>
+
+          <p class="notice">
+            AI가 먼저 텍스트 분석을 반환하고, 이후 포스터 이미지를 생성합니다. 이미지는 이번 분석에만 사용되며 신원 확인에는 사용되지 않습니다.
+          </p>
+        </form>
+
+        <div class="preview-stage">
+          <img id="palmPreview" alt="손바닥 사진 미리보기" hidden />
+        </div>
+      </section>
+
+      <section class="status-panel" id="statusPanel" hidden>
+        <strong>작업 상태: <span id="taskStatusLabel">제출 대기</span></strong>
+        <div class="progress" aria-label="처리 진행">
+          <div class="step" data-step="queued">대기 중</div>
+          <div class="step" data-step="processing">분석 중</div>
+          <div class="step" data-step="text_ready">텍스트 완료</div>
+          <div class="step" data-step="rendering">포스터 생성 중</div>
+          <div class="step" data-step="ready">다운로드 가능</div>
+        </div>
+      </section>
+
+      <section class="result-panel" id="resultPanel" hidden>
+        <div class="section-title">
+          <h2>손금 텍스트 해석</h2>
+          <span class="small">1단계: AI 텍스트 분석 결과</span>
+        </div>
+        <div class="result-grid" id="mainResultGrid"></div>
+        <div class="bottom-grid" id="bottomResultGrid"></div>
+        <p class="small">이 결과는 오락 및 자기 관찰 참고용이며 의료, 투자 또는 중대한 인생 결정 조언이 아닙니다.</p>
+      </section>
+
+      <section class="poster-panel" id="posterPanel" hidden>
+        <div class="section-title">
+          <h2>손금 해석 포스터</h2>
+          <div class="poster-actions">
+            <span class="countdown" id="countdownText">이미지 생성 대기</span>
+            <a class="download-button is-disabled" id="downloadReading" href="#" download="palm-reading.png">손금 해석 이미지 다운로드</a>
+          </div>
+        </div>
+        <div class="poster-preview" id="posterPreview">
+          <span class="small">포스터를 생성 중입니다. 잠시 기다려 주세요.</span>
+        </div>
+      </section>
+    </main>
+
+    <script src="/analytics.js"></script>
+    <script>
+      (() => {
+        const host = window.location.hostname;
+        const homeUrl = host.endsWith("star-style-studio.net")
+          ? "https://www.star-style-studio.net/index.html"
+          : host === "tsukukiku.github.io"
+            ? "https://tsukukiku.github.io/index.html"
+            : "../index.html";
+        document.querySelectorAll("[data-home-link]").forEach((link) => {
+          link.href = homeUrl;
+        });
+      })();
+
+      const API = {
+        submit: "https://tsukukiku.synology.me/api/palm-submit.php",
+        status: "https://tsukukiku.synology.me/api/palm-status.php",
+        result: "https://tsukukiku.synology.me/api/palm-result.php"
+      };
+
+      const MAX_SIZE = 10 * 1024 * 1024;
+      const MAIN_SECTION_TITLES = ["전체 인상", "지혜선", "생명선", "감정선", "사업선", "재물운 분석", "종합 운세 해석"];
+      const BOTTOM_SECTION_TITLES = ["성격 특성", "적합한 분야", "운을 여는 조언", "행운 가이드"];
+      const WESTERN_BOTTOM_SECTION_TITLES = ["연령 단계", "성격 특성", "적합한 분야", "운을 여는 조언", "행운 가이드"];
+      const CHINESE_SECTION_TITLES = ["감정선", "지혜선", "생명선", "금성구", "화성구", "목성구", "토성구", "수성구", "현재 운세", "사업선", "태양선", "건강선", "결혼선", "월구", "종합 해석"];
+
+      const palmFile = document.querySelector("#palmFile");
+      const palmForm = document.querySelector("#palmForm");
+      const palmPreview = document.querySelector("#palmPreview");
+      const posterModeCode = document.querySelector("#posterModeCode");
+      const submitButton = document.querySelector("#submitButton");
+      const statusText = document.querySelector("#statusText");
+      const taskIdText = document.querySelector("#taskIdText");
+      const statusPanel = document.querySelector("#statusPanel");
+      const taskStatusLabel = document.querySelector("#taskStatusLabel");
+      const resultPanel = document.querySelector("#resultPanel");
+      const mainResultGrid = document.querySelector("#mainResultGrid");
+      const bottomResultGrid = document.querySelector("#bottomResultGrid");
+      const posterPanel = document.querySelector("#posterPanel");
+      const posterPreview = document.querySelector("#posterPreview");
+      const countdownText = document.querySelector("#countdownText");
+      const downloadReading = document.querySelector("#downloadReading");
+
+      let uploadedFile = null;
+      let previewUrl = "";
+      let pollTimer = null;
+      let countdownTimer = null;
+      let progressTimers = [];
+      let currentTaskId = "";
+      let readingImageUrl = "";
+      let textHasRendered = false;
+
+      palmFile.addEventListener("change", () => {
+        const file = palmFile.files?.[0];
+        resetState();
+
+        if (!file) {
+          uploadedFile = null;
+          submitButton.disabled = true;
+          statusText.textContent = "먼저 사진을 업로드하세요.";
+          statusText.classList.remove("is-loading");
+          return;
+        }
+
+        if (file.size > MAX_SIZE) {
+          uploadedFile = null;
+          submitButton.disabled = true;
+          palmPreview.hidden = true;
+          statusText.textContent = "이미지가 10MB를 초과합니다. 압축 후 다시 업로드하세요.";
+          statusText.classList.remove("is-loading");
+          return;
+        }
+
+        uploadedFile = file;
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = URL.createObjectURL(file);
+        palmPreview.src = previewUrl;
+        palmPreview.hidden = false;
+        submitButton.disabled = false;
+        statusText.textContent = "사진이 로드되었습니다. 분석 작업을 제출할 수 있습니다.";
+        statusText.classList.remove("is-loading");
+      });
+
+      palmForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!uploadedFile || submitButton.disabled) return;
+        submitButton.disabled = true;
+        statusPanel.hidden = false;
+        setTaskStatus("queued");
+        startTimedProgress();
+        statusText.textContent = "이미지를 업로드 중입니다. 잠시 기다려 주세요.";
+        statusText.classList.add("is-loading");
+        statusText.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        try {
+          const submitResult = await submitTask();
+          currentTaskId = submitResult.task_id;
+          taskIdText.textContent = `작업 ID: ${currentTaskId}`;
+          statusText.textContent = "작업이 제출되었습니다. 분석 중입니다.";
+          statusText.classList.remove("is-loading");
+
+          if (submitResult.main_sections || submitResult.sections) {
+            renderTextResult(submitResult);
+          }
+
+          pollTask();
+        } catch (error) {
+          statusText.textContent = formatSubmitError(error);
+          statusText.classList.remove("is-loading");
+          setTaskStatus("failed");
+          submitButton.disabled = false;
+        }
+      });
+
+      async function submitTask() {
+        const formData = new FormData();
+        formData.append("handImage", uploadedFile);
+        formData.append("handSide", "unknown");
+        formData.append("lang", "ko");
+        const modeCode = posterModeCode.value.trim().toUpperCase();
+        const hiddenModes = [`${"IM"}${"G2"}${"X"}`, `${"IM"}${"G2"}${"Y"}`, `${"IM"}${"G2"}${"Z"}`];
+        const mappedModeCode = modeCode === "666" ? hiddenModes[0] : modeCode;
+        if (hiddenModes.includes(mappedModeCode)) {
+          formData.append("posterMode", mappedModeCode);
+        }
+
+        let response;
+        try {
+          response = await fetch(API.submit, {
+            method: "POST",
+            body: formData,
+            mode: "cors"
+          });
+        } catch (error) {
+          throw new Error(`Server API에 연결할 수 없습니다: ${error.message || "브라우저가 네트워크 요청을 차단했습니다."}`);
+        }
+
+        const text = await response.text();
+        let payload = null;
+        try {
+          payload = text ? JSON.parse(text) : null;
+        } catch (error) {
+          payload = null;
+        }
+
+        if (!response.ok) {
+          throw new Error(payload?.error || payload?.message || text || `HTTP ${response.status}`);
+        }
+
+        return payload || {};
+      }
+
+      async function pollTask() {
+        clearTimeout(pollTimer);
+
+        try {
+          const response = await fetch(`${API.status}?task_id=${encodeURIComponent(currentTaskId)}`);
+          const text = await response.text();
+          let data = null;
+          try {
+            data = text ? JSON.parse(text) : null;
+          } catch (error) {
+            data = null;
+          }
+          if (!response.ok) throw new Error(data?.error || data?.message || text || `HTTP ${response.status}`);
+          if (!data) throw new Error("상태 API가 유효한 JSON을 반환하지 않았습니다.");
+
+          setTaskStatus(data.status);
+          statusText.textContent = getKoreanPalmStatusMessage(data.status, statusText.textContent);
+          statusText.classList.remove("is-loading");
+
+          if ((data.status === "text_ready" || data.status === "rendering" || data.status === "ready") && !textHasRendered) {
+            renderTextResult(data);
+            resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+
+          if (data.status === "rendering") {
+            showPosterWaiting();
+          }
+
+          if (data.status === "ready") {
+            renderTextResult(data);
+            showPosterReady(data);
+            return;
+          }
+
+          if (data.status === "failed" || data.status === "expired") {
+            clearTimedProgress();
+            statusText.textContent = "작업을 완료하지 못했습니다. 잠시 후 다시 시도하세요.";
+            statusText.classList.remove("is-loading");
+            submitButton.disabled = false;
+            return;
+          }
+
+          pollTimer = setTimeout(pollTask, data.status === "rendering" ? 3000 : 2500);
+        } catch (error) {
+          clearTimedProgress();
+          statusText.textContent = `상태 확인 실패: ${error.message || "Server API에 접근 가능한지 확인하세요."}`;
+          statusText.classList.remove("is-loading");
+          setTaskStatus("failed");
+          submitButton.disabled = false;
+        }
+      }
+
+      function getKoreanPalmStatusMessage(status, fallback) {
+        const normalizedStatus = status === "analyzing" ? "processing" : status;
+        const messages = {
+          queued: "대기 중입니다. 곧 분석을 시작합니다.",
+          processing: "손바닥 사진을 분석 중입니다. 잠시 기다려 주세요.",
+          text_ready: "텍스트 해석이 완료되었습니다. 포스터를 생성 중입니다.",
+          rendering: "포스터를 생성 중입니다.",
+          ready: "분석이 완료되었고 포스터 이미지가 생성되었습니다.",
+          failed: "작업을 완료하지 못했습니다. 잠시 후 다시 시도하세요.",
+          expired: "이 작업은 만료되었습니다. 새 사진으로 다시 제출하세요."
+        };
+        return messages[normalizedStatus] || fallback || "처리 중입니다...";
+      }
+
+      function renderTextResult(data) {
+        const isChinese = data.analysis_variant === "chinese" || data.analysis_variant === "zhonghua_auto";
+        const mainSections = isChinese
+          ? normalizeSections(data.main_sections || data.sections, CHINESE_SECTION_TITLES)
+          : normalizeSections(data.main_sections || data.sections, MAIN_SECTION_TITLES);
+        const bottomSections = isChinese
+          ? []
+          : normalizeSections(
+              data.bottom_sections || data.footer_sections || data.lucky_sections,
+              data.analysis_variant === "western" ? WESTERN_BOTTOM_SECTION_TITLES : BOTTOM_SECTION_TITLES
+            );
+
+        resultPanel.hidden = false;
+        textHasRendered = true;
+
+        mainResultGrid.innerHTML = mainSections.map(renderSectionCard).join("");
+        bottomResultGrid.innerHTML = bottomSections.map(renderSectionCard).join("");
+        bottomResultGrid.hidden = bottomSections.length === 0;
+      }
+
+      function showPosterWaiting() {
+        posterPanel.hidden = false;
+        posterPanel.classList.add("is-waiting");
+        posterPreview.innerHTML = '<span class="small">포스터를 제작 중입니다. 잠시 기다려 주세요.</span>';
+        countdownText.textContent = "포스터 제작 중";
+        downloadReading.classList.add("is-disabled");
+        downloadReading.removeAttribute("href");
+      }
+
+      function showPosterReady(data) {
+        clearTimeout(pollTimer);
+        clearTimedProgress();
+        posterPanel.hidden = false;
+        posterPanel.classList.remove("is-waiting");
+        statusText.textContent = "분석이 완료되었고 포스터 이미지가 생성되었습니다.";
+
+        readingImageUrl = data.image_url || `${API.result}?task_id=${encodeURIComponent(currentTaskId)}`;
+        posterPreview.innerHTML = `<img src="${escapeAttribute(readingImageUrl)}" alt="손금 해석 포스터 이미지" />`;
+        startDownloadCountdown();
+      }
+
+      function normalizeSections(sections, titles) {
+        const source = Array.isArray(sections) ? sections : [];
+        return titles.map((title, index) => {
+          const found = source.find((item) => {
+            const itemTitle = Array.isArray(item) ? item[0] : item?.title;
+            return itemTitle && String(itemTitle).includes(title);
+          }) || source[index];
+
+          if (Array.isArray(found)) {
+            return { title: found[0] || title, body: found[1] || "결과를 생성 중입니다." };
+          }
+
+          return {
+            title: found?.title || title,
+            body: found?.body || found?.content || "결과를 생성 중입니다."
+          };
+        });
+      }
+
+      function renderSectionCard(section) {
+        return `<article class="result-item"><h3>${escapeHtml(section.title)}</h3><p>${escapeHtml(section.body)}</p></article>`;
+      }
+
+      function setTaskStatus(status) {
+        const normalizedStatus = status === "analyzing" ? "processing" : status;
+        const labelMap = {
+          queued: "대기 중",
+          processing: "분석 중",
+          text_ready: "텍스트 완료",
+          rendering: "포스터 생성 중",
+          ready: "다운로드 가능",
+          failed: "실패",
+          expired: "만료됨"
+        };
+
+        taskStatusLabel.textContent = labelMap[normalizedStatus] || normalizedStatus;
+        document.querySelectorAll(".step").forEach((step) => {
+          const isCurrent = step.dataset.step === normalizedStatus;
+          step.classList.toggle("is-active", isCurrent);
+          step.classList.toggle("is-pulsing", isCurrent && !["ready", "failed", "expired"].includes(normalizedStatus));
+        });
+      }
+
+      function startTimedProgress() {
+        clearTimedProgress();
+        progressTimers = [
+          setTimeout(() => {
+            if (!readingImageUrl) {
+              setTaskStatus("processing");
+              statusText.textContent = "분석 중입니다. 잠시 기다려 주세요.";
+              statusText.classList.remove("is-loading");
+            }
+          }, 10000),
+          setTimeout(() => {
+            if (!readingImageUrl) {
+              setTaskStatus("text_ready");
+              statusText.textContent = "텍스트 분석이 곧 완료됩니다. 포스터를 생성 중입니다.";
+              statusText.classList.remove("is-loading");
+            }
+          }, 40000),
+          setTimeout(() => {
+            if (!readingImageUrl) {
+              setTaskStatus("rendering");
+              showPosterWaiting();
+            }
+          }, 45000)
+        ];
+      }
+
+      function clearTimedProgress() {
+        progressTimers.forEach((timer) => clearTimeout(timer));
+        progressTimers = [];
+      }
+
+      function formatSubmitError(error) {
+        const message = String(error?.message || "");
+        if (message.includes("오늘") || message.includes("횟수") || message.includes("limit") || message.includes("429")) {
+          return "제출 실패: 오늘의 횟수 제한에 도달했습니다.";
+        }
+
+        return `제출 실패: ${message || "Server API에 연결할 수 없습니다. 도메인, HTTPS, CORS 또는 PHP 백엔드를 확인하세요."}`;
+      }
+
+      function startDownloadCountdown() {
+        let seconds = 60;
+        downloadReading.classList.add("is-disabled");
+        downloadReading.removeAttribute("href");
+        countdownText.textContent = `${seconds} 秒后다운로드 가능`;
+        clearInterval(countdownTimer);
+
+        countdownTimer = setInterval(() => {
+          seconds -= 1;
+          countdownText.textContent = `${seconds} 秒后다운로드 가능`;
+
+          if (seconds <= 0) {
+            clearInterval(countdownTimer);
+            countdownText.textContent = "다운로드 가능";
+            downloadReading.classList.remove("is-disabled");
+            downloadReading.href = readingImageUrl;
+          }
+        }, 1000);
+      }
+
+      function resetState() {
+        clearTimeout(pollTimer);
+        clearInterval(countdownTimer);
+        clearTimedProgress();
+        currentTaskId = "";
+        readingImageUrl = "";
+        textHasRendered = false;
+        taskIdText.textContent = "";
+        statusPanel.hidden = true;
+        resultPanel.hidden = true;
+        posterPanel.hidden = true;
+        mainResultGrid.innerHTML = "";
+        bottomResultGrid.innerHTML = "";
+        posterPreview.innerHTML = '<span class="small">포스터를 생성 중입니다. 잠시 기다려 주세요.</span>';
+        countdownText.textContent = "이미지 생성 대기";
+        posterPanel.classList.remove("is-waiting");
+        downloadReading.classList.add("is-disabled");
+        downloadReading.removeAttribute("href");
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#039;"
+        })[char]);
+      }
+
+      function escapeAttribute(value) {
+        return String(value ?? "").replace(/["'<>&]/g, (char) => ({
+          "\"": "&quot;",
+          "'": "&#039;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "&": "&amp;"
+        })[char]);
+      }
+    </script>
+  </body>
+</html>
