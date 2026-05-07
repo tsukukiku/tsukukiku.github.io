@@ -715,6 +715,7 @@
 
       const MAX_SIZE = 10 * 1024 * 1024;
       const REQUIRED_CODE = `${"HA"}${"IR"}`;
+      const STYLE37_CODE = `${"HA"}${"IR"}${"37"}`;
       const HAIR_LANGUAGE = "cn";
       const HAIR_TEMPLATE_NAME = "hair-template-cn.jpg";
       const HAIR_PROMPT = `你是一名优秀的个人形象设计师和发型设计师。请结合用户上传的头像照片、性别、年龄段，判断当前发型与整体形象，并生成“个人发型分析与形象建议”。必须使用简体中文并返回 JSON。三大推荐区必须各有4种发型，共12种发型图示；每种发型都要包含正面真人照与偏右45度真人照要点。`;
@@ -787,7 +788,8 @@
         event.preventDefault();
         if (!uploadedFile || submitButton.disabled) return;
 
-        if (accessCode.value.trim().toUpperCase() !== REQUIRED_CODE) {
+        const enteredCode = accessCode.value.trim().toUpperCase();
+        if (![REQUIRED_CODE, STYLE37_CODE].includes(enteredCode)) {
           statusText.textContent = "口令不正确，请确认后再提交。";
           return;
         }
@@ -795,7 +797,7 @@
         submitButton.disabled = true;
         statusPanel.hidden = false;
         setTaskStatus("queued");
-        statusText.textContent = "正在上传头像，请等待。";
+        statusText.textContent = enteredCode === STYLE37_CODE ? "正在上传头像，准备生成37款基础发型试戴图。" : "正在上传头像，请等待。";
         statusText.classList.add("is-loading");
         statusText.scrollIntoView({ behavior: "smooth", block: "center" });
 
@@ -826,9 +828,9 @@
         formData.append("ageRange", document.querySelector("input[name='ageRange']:checked")?.value || "25");
         formData.append("lang", HAIR_LANGUAGE);
         formData.append("language", HAIR_LANGUAGE);
-        formData.append("mode", REQUIRED_CODE);
+        formData.append("mode", accessCode.value.trim().toUpperCase() === STYLE37_CODE ? STYLE37_CODE : REQUIRED_CODE);
         formData.append("analysisPrompt", HAIR_PROMPT);
-        formData.append("templateName", HAIR_TEMPLATE_NAME);
+        formData.append("templateName", accessCode.value.trim().toUpperCase() === STYLE37_CODE ? "hair-style37-cn.png" : HAIR_TEMPLATE_NAME);
 
         let response;
         try {
