@@ -579,7 +579,9 @@
         }
       }
     </style>
-  </head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940567227813698"
+     crossorigin="anonymous"></script>
+</head>
   <body>
     <main>
       <header class="topbar">
@@ -985,10 +987,7 @@
 
       function getResultImageUrl() {
         const query = `task_id=${encodeURIComponent(currentTaskId)}`;
-        if (window.location.protocol === "file:") {
-          return `${API.result}?${query}`;
-        }
-        return `/api/hair-result.php?${query}`;
+        return `${API.result}?${query}`;
       }
       function setTaskStatus(status) {
         const normalizedStatus = status === "analyzing" ? "processing" : status;
@@ -1025,7 +1024,7 @@
             clearInterval(countdownTimer);
             countdownText.textContent = "다운로드 가능";
             downloadPoster.classList.remove("is-disabled");
-            downloadPoster.href = posterImageUrl;
+            downloadPoster.href = `${posterImageUrl}&download=1`;
           }
         }, 1000);
       }
