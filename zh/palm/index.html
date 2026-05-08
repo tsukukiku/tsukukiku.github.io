@@ -6,7 +6,7 @@
     <title>手相命運分析 | Palm Reading & Fate Analysis</title>
     <meta
       name="description"
-      content="上传手掌照片，生成手相命运分析、掌纹解读文字与精美手相解读图。"
+      content="上傳手掌照片，生成手相命運分析、掌紋解讀文字與精美手相解讀圖。"
     />
     <style>
       :root {
@@ -415,24 +415,26 @@
         }
       }
     </style>
-  </head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940567227813698"
+     crossorigin="anonymous"></script>
+</head>
   <body>
     <main>
       <div class="topbar">
         <a class="home-link" href="../index.html">返回首頁</a>
         <div class="site-title">
-          <strong>手相命运分析</strong>
+          <strong>手相命運分析</strong>
           <span>Palm Reading & Fate Analysis</span>
           <span>手相鑑定</span>
         </div>
-        <span class="top-quota">每日分析次数 3</span>
+        <span class="top-quota">每日分析次數 3</span>
       </div>
 
       <section class="workspace">
         <form class="upload-card" id="palmForm">
           <label class="upload-box">
-            <strong>上传手掌照片</strong>
-            <span>支持 JPG / PNG / WebP，图片需小于 10MB。后台会自动压缩后提交分析。</span>
+            <strong>上傳手掌照片</strong>
+            <span>支援 JPG / PNG / WebP，圖片需小於 10MB。後台會自動壓縮後提交分析。</span>
             <input id="palmFile" type="file" accept="image/png,image/jpeg,image/webp" />
           </label>
 
@@ -441,51 +443,51 @@
             <input id="posterModeCode" type="password" inputmode="latin" autocomplete="off" aria-label="口令" />
           </div>
 
-          <button id="submitButton" type="submit" disabled>提交分析任务</button>
-          <p class="status" id="statusText">请先上传照片。</p>
+          <button id="submitButton" type="submit" disabled>提交分析任務</button>
+          <p class="status" id="statusText">請先上傳照片。</p>
           <p class="task-id" id="taskIdText"></p>
 
           <p class="notice">
-            AI先返回文字分析，随后生成精美海报图片。图片仅用于本次分析，不用于身份识别。
+            AI先返回文字分析，隨後生成精美海報圖片。圖片僅用於本次分析，不用於身分識別。
           </p>
         </form>
 
         <div class="preview-stage">
-          <img id="palmPreview" alt="手掌照片预览" hidden />
+          <img id="palmPreview" alt="手掌照片預覽" hidden />
         </div>
       </section>
 
       <section class="status-panel" id="statusPanel" hidden>
-        <strong>任务状态：<span id="taskStatusLabel">等待提交</span></strong>
-        <div class="progress" aria-label="处理进度">
-          <div class="step" data-step="queued">排队中</div>
+        <strong>任務狀態：<span id="taskStatusLabel">等待提交</span></strong>
+        <div class="progress" aria-label="處理进度">
+          <div class="step" data-step="queued">排隊中</div>
           <div class="step" data-step="processing">分析中</div>
           <div class="step" data-step="text_ready">文字完成</div>
-          <div class="step" data-step="rendering">生成海报</div>
-          <div class="step" data-step="ready">可下载</div>
+          <div class="step" data-step="rendering">生成海報</div>
+          <div class="step" data-step="ready">可下載</div>
         </div>
       </section>
 
       <section class="result-panel" id="resultPanel" hidden>
         <div class="section-title">
-          <h2>手相文字解读</h2>
-          <span class="small">第一步：AI 分析文字结果</span>
+          <h2>手相文字解讀</h2>
+          <span class="small">第一步：AI 分析文字結果</span>
         </div>
         <div class="result-grid" id="mainResultGrid"></div>
         <div class="bottom-grid" id="bottomResultGrid"></div>
-        <p class="small">本结果用于娱乐与自我观察参考，不构成医疗、投资或人生重大决策建议。</p>
+        <p class="small">本結果用於娱乐與自我觀察参考，不構成醫療、投資或人生重大決策建議。</p>
       </section>
 
       <section class="poster-panel" id="posterPanel" hidden>
         <div class="section-title">
-          <h2>精美海报风“手相解读”图</h2>
+          <h2>精美海報風“手相解讀”圖</h2>
           <div class="poster-actions">
-            <span class="countdown" id="countdownText">等待图片生成</span>
-            <a class="download-button is-disabled" id="downloadReading" href="#" download="palm-reading.png">下载“手相解读”图</a>
+            <span class="countdown" id="countdownText">等待圖片生成</span>
+            <a class="download-button is-disabled" id="downloadReading" href="#" download="palm-reading.png">下載「手相解讀」圖</a>
           </div>
         </div>
         <div class="poster-preview" id="posterPreview">
-          <span class="small">海报生成中，请稍候。</span>
+          <span class="small">海報生成中，請稍候。</span>
         </div>
       </section>
     </main>
@@ -511,10 +513,10 @@
       };
 
       const MAX_SIZE = 10 * 1024 * 1024;
-      const MAIN_SECTION_TITLES = ["整体印象", "智慧线", "生命线", "感情线", "事业线", "财运分析", "总体运势解读"];
-      const BOTTOM_SECTION_TITLES = ["性格特质", "适合领域", "开运建议", "幸运指引"];
-      const WESTERN_BOTTOM_SECTION_TITLES = ["年龄阶段", "性格特质", "适合领域", "开运建议", "幸运指引"];
-      const CHINESE_SECTION_TITLES = ["感情线", "智慧线", "生命线", "金星丘", "火星丘", "木星丘", "土星丘", "水星丘", "当前运势", "事业线", "太阳线", "健康线", "婚姻线", "月丘", "综合解读"];
+      const MAIN_SECTION_TITLES = ["整體印象", "智慧線", "生命線", "感情線", "事業線", "財運分析", "總體運勢解讀"];
+      const BOTTOM_SECTION_TITLES = ["性格特質", "適合領域", "開運建議", "幸運指引"];
+      const WESTERN_BOTTOM_SECTION_TITLES = ["年齡階段", "性格特質", "適合領域", "開運建議", "幸運指引"];
+      const CHINESE_SECTION_TITLES = ["感情線", "智慧線", "生命線", "金星丘", "火星丘", "木星丘", "土星丘", "水星丘", "目前運勢", "事業線", "太陽線", "健康線", "婚姻線", "月丘", "綜合解讀"];
 
       const palmFile = document.querySelector("#palmFile");
       const palmForm = document.querySelector("#palmForm");
@@ -549,7 +551,7 @@
         if (!file) {
           uploadedFile = null;
           submitButton.disabled = true;
-          statusText.textContent = "请先上传照片。";
+          statusText.textContent = "請先上傳照片。";
           statusText.classList.remove("is-loading");
           return;
         }
@@ -558,7 +560,7 @@
           uploadedFile = null;
           submitButton.disabled = true;
           palmPreview.hidden = true;
-          statusText.textContent = "图片超过 10MB，请压缩后重新上传。";
+          statusText.textContent = "圖片超過 10MB，請壓縮後重新上傳。";
           statusText.classList.remove("is-loading");
           return;
         }
@@ -569,7 +571,7 @@
         palmPreview.src = previewUrl;
         palmPreview.hidden = false;
         submitButton.disabled = false;
-        statusText.textContent = "照片已载入，可以提交分析任务。";
+        statusText.textContent = "照片已載入，可以提交分析任務。";
         statusText.classList.remove("is-loading");
       });
 
@@ -580,15 +582,15 @@
         statusPanel.hidden = false;
         setTaskStatus("queued");
         startTimedProgress();
-        statusText.textContent = "正在上传图片，请等待";
+        statusText.textContent = "正在上傳圖片，請等待";
         statusText.classList.add("is-loading");
         statusText.scrollIntoView({ behavior: "smooth", block: "center" });
 
         try {
           const submitResult = await submitTask();
           currentTaskId = submitResult.task_id;
-          taskIdText.textContent = `任务编号：${currentTaskId}`;
-          statusText.textContent = submitResult.message || "任务已提交，正在分析。";
+          taskIdText.textContent = `任務編號：${currentTaskId}`;
+          statusText.textContent = submitResult.message || "任務已提交，正在分析。";
           statusText.classList.remove("is-loading");
 
           if (submitResult.main_sections || submitResult.sections) {
@@ -623,7 +625,7 @@
             mode: "cors"
           });
         } catch (error) {
-          throw new Error(`无法链接Sever API：${error.message || "网络请求被浏览器阻止。"}`);
+          throw new Error(`無法連結Server API：${error.message || "網路請求被瀏覽器阻擋。"}`);
         }
 
         const text = await response.text();
@@ -654,7 +656,7 @@
             data = null;
           }
           if (!response.ok) throw new Error(data?.error || data?.message || text || `HTTP ${response.status}`);
-          if (!data) throw new Error("状态接口没有返回有效 JSON。");
+          if (!data) throw new Error("狀態介面没有返回有效 JSON。");
 
           setTaskStatus(data.status);
           statusText.textContent = data.message || statusText.textContent;
@@ -677,7 +679,7 @@
 
           if (data.status === "failed" || data.status === "expired") {
             clearTimedProgress();
-            statusText.textContent = data.message || "任务未能完成，请稍后重试。";
+            statusText.textContent = data.message || "任務未能完成，請稍後重試。";
             statusText.classList.remove("is-loading");
             submitButton.disabled = false;
             return;
@@ -686,7 +688,7 @@
           pollTimer = setTimeout(pollTask, data.status === "rendering" ? 3000 : 2500);
         } catch (error) {
           clearTimedProgress();
-          statusText.textContent = `状态查询失败：${error.message || "请检查Sever API是否可访问。"}`;
+          statusText.textContent = `狀態查詢失敗：${error.message || "請檢查Server API是否可存取。"}`;
           statusText.classList.remove("is-loading");
           setTaskStatus("failed");
           submitButton.disabled = false;
@@ -716,8 +718,8 @@
       function showPosterWaiting() {
         posterPanel.hidden = false;
         posterPanel.classList.add("is-waiting");
-        posterPreview.innerHTML = '<span class="small">海报制作中，请稍候。</span>';
-        countdownText.textContent = "海报制作中";
+        posterPreview.innerHTML = '<span class="small">海報製作中，請稍候。</span>';
+        countdownText.textContent = "海報製作中";
         downloadReading.classList.add("is-disabled");
         downloadReading.removeAttribute("href");
       }
@@ -727,10 +729,10 @@
         clearTimedProgress();
         posterPanel.hidden = false;
         posterPanel.classList.remove("is-waiting");
-        statusText.textContent = data.message || "分析完成，海报图已生成。";
+        statusText.textContent = data.message || "分析完成，海報圖已生成。";
 
         readingImageUrl = data.image_url || `${API.result}?task_id=${encodeURIComponent(currentTaskId)}`;
-        posterPreview.innerHTML = `<img src="${escapeAttribute(readingImageUrl)}" alt="精美海报风手相解读图" />`;
+        posterPreview.innerHTML = `<img src="${escapeAttribute(readingImageUrl)}" alt="精美海報風手相解讀圖" />`;
         startDownloadCountdown();
       }
 
@@ -743,12 +745,12 @@
           }) || source[index];
 
           if (Array.isArray(found)) {
-            return { title: found[0] || title, body: found[1] || "结果生成中。" };
+            return { title: found[0] || title, body: found[1] || "結果生成中。" };
           }
 
           return {
             title: found?.title || title,
-            body: found?.body || found?.content || "结果生成中。"
+            body: found?.body || found?.content || "結果生成中。"
           };
         });
       }
@@ -760,13 +762,13 @@
       function setTaskStatus(status) {
         const normalizedStatus = status === "analyzing" ? "processing" : status;
         const labelMap = {
-          queued: "排队中",
+          queued: "排隊中",
           processing: "分析中",
           text_ready: "文字完成",
-          rendering: "生成海报",
-          ready: "可下载",
-          failed: "失败",
-          expired: "已过期"
+          rendering: "生成海報",
+          ready: "可下載",
+          failed: "失敗",
+          expired: "已過期"
         };
 
         taskStatusLabel.textContent = labelMap[normalizedStatus] || normalizedStatus;
@@ -783,14 +785,14 @@
           setTimeout(() => {
             if (!readingImageUrl) {
               setTaskStatus("processing");
-              statusText.textContent = "正在分析中，请稍候。";
+              statusText.textContent = "正在分析中，請稍候。";
               statusText.classList.remove("is-loading");
             }
           }, 10000),
           setTimeout(() => {
             if (!readingImageUrl) {
               setTaskStatus("text_ready");
-              statusText.textContent = "文字分析预计已完成，正在生成海报。";
+              statusText.textContent = "文字分析預計已完成，正在生成海報。";
               statusText.classList.remove("is-loading");
             }
           }, 40000),
@@ -810,27 +812,27 @@
 
       function formatSubmitError(error) {
         const message = String(error?.message || "");
-        if (message.includes("今日") || message.includes("次数") || message.includes("limit") || message.includes("429")) {
-          return "提交失败：超过当日次数。";
+        if (message.includes("今日") || message.includes("次數") || message.includes("limit") || message.includes("429")) {
+          return "提交失敗：超過當日次數。";
         }
 
-        return `提交失败：${message || "无法链接Sever API，请检查域名、HTTPS、CORS 或 PHP 后端。"}`;
+        return `提交失敗：${message || "無法連結Server API，請檢查網域、HTTPS、CORS 或 PHP 後端。"}`;
       }
 
       function startDownloadCountdown() {
         let seconds = 60;
         downloadReading.classList.add("is-disabled");
         downloadReading.removeAttribute("href");
-        countdownText.textContent = `${seconds} 秒后可下载`;
+        countdownText.textContent = `${seconds} 秒後可下載`;
         clearInterval(countdownTimer);
 
         countdownTimer = setInterval(() => {
           seconds -= 1;
-          countdownText.textContent = `${seconds} 秒后可下载`;
+          countdownText.textContent = `${seconds} 秒後可下載`;
 
           if (seconds <= 0) {
             clearInterval(countdownTimer);
-            countdownText.textContent = "可以下载";
+            countdownText.textContent = "可以下載";
             downloadReading.classList.remove("is-disabled");
             downloadReading.href = readingImageUrl;
           }
@@ -850,8 +852,8 @@
         posterPanel.hidden = true;
         mainResultGrid.innerHTML = "";
         bottomResultGrid.innerHTML = "";
-        posterPreview.innerHTML = '<span class="small">海报生成中，请稍候。</span>';
-        countdownText.textContent = "等待图片生成";
+        posterPreview.innerHTML = '<span class="small">海報生成中，請稍候。</span>';
+        countdownText.textContent = "等待圖片生成";
         posterPanel.classList.remove("is-waiting");
         downloadReading.classList.add("is-disabled");
         downloadReading.removeAttribute("href");
