@@ -539,10 +539,49 @@
       let pollTimer = null;
       let countdownTimer = null;
       let progressTimers = [];
+      let waitHeartbeatTimer = null;
+      let waitStartedAt = 0;
+      let waitPollCount = 0;
+      let waitPhase = "\u7b49\u5f85\u63d0\u4ea4";
+      let waitProgress = 0;
+      let submitButtonLabel = "";
       let currentTaskId = "";
       let readingImageUrl = "";
       let textHasRendered = false;
 
+      function formatElapsed(ms) {
+        const total = Math.max(0, Math.floor(ms / 1000));
+        const min = String(Math.floor(total / 60)).padStart(2, "0");
+        const sec = String(total % 60).padStart(2, "0");
+        return `${min}:${sec}`;
+      }
+
+      function waitMessage() {
+        const elapsed = waitStartedAt ? formatElapsed(Date.now() - waitStartedAt) : "00:00";
+        const dots = ".".repeat((Math.floor((Date.now() - (waitStartedAt || Date.now())) / 1000) % 3) + 1);
+        return `${waitPhase}${dots} \u5df2\u7b49\u5f85 ${elapsed} / \u8fdb\u5ea6 ${waitProgress}% / \u67e5\u8be2 ${waitPollCount} \u6b21\u3002\u8bf7\u4e0d\u8981\u91cd\u590d\u63d0\u4ea4\u6216\u5173\u95ed\u9875\u9762\u3002`;
+      }
+
+      function startWaitHeartbeat(phase = "\u6b63\u5728\u4e0a\u4f20\u56fe\u7247") {
+        waitStartedAt = Date.now();
+        waitPollCount = 0;
+        waitProgress = 5;
+        waitPhase = phase;
+        submitButtonLabel = submitButton.textContent;
+        clearInterval(waitHeartbeatTimer);
+        waitHeartbeatTimer = setInterval(() => {
+          submitButton.textContent = `\u751f\u6210\u4e2d ${formatElapsed(Date.now() - waitStartedAt)}`;
+          statusText.textContent = waitMessage();
+          statusText.classList.add("is-loading");
+        }, 1000);
+      }
+
+      function stopWaitHeartbeat() {
+        clearInterval(waitHeartbeatTimer);
+        waitHeartbeatTimer = null;
+        if (submitButtonLabel) submitButton.textContent = submitButtonLabel;
+        submitButtonLabel = "";
+      }
       palmFile.addEventListener("change", () => {
         const file = palmFile.files?.[0];
         resetState();
@@ -598,8 +637,9 @@
 
           pollTask();
         } catch (error) {
-          statusText.textContent = formatSubmitError(error);
+          statusText.textContent = `${formatSubmitError(error)} \u5df2\u7b49\u5f85 ${formatElapsed(Date.now() - waitStartedAt)}\u3002`;
           statusText.classList.remove("is-loading");
+          stopWaitHeartbeat();
           setTaskStatus("failed");
           submitButton.disabled = false;
         }
@@ -658,8 +698,11 @@
           if (!data) throw new Error("状态接口没有返回有效 JSON。");
 
           setTaskStatus(data.status);
-          statusText.textContent = data.message || statusText.textContent;
-          statusText.classList.remove("is-loading");
+          waitPollCount += 1;
+          waitPhase = data.message || (data.status === "rendering" ? "\u6b63\u5728\u751f\u6210\u6d77\u62a5" : "\u6b63\u5728\u5206\u6790\u4e2d");
+          waitProgress = data.status === "queued" ? 10 : data.status === "processing" || data.status === "analyzing" ? 35 : data.status === "text_ready" ? 65 : data.status === "rendering" ? 85 : data.status === "ready" ? 100 : waitProgress;
+          statusText.textContent = waitMessage();
+          statusText.classList.add("is-loading");
 
           if ((data.status === "text_ready" || data.status === "rendering" || data.status === "ready") && !textHasRendered) {
             renderTextResult(data);
@@ -728,7 +771,9 @@
         clearTimedProgress();
         posterPanel.hidden = false;
         posterPanel.classList.remove("is-waiting");
-        statusText.textContent = data.message || "分析完成，海报图已生成。";
+        statusText.textContent = `${data.message || "\u5206\u6790\u5b8c\u6210\uff0c\u6d77\u62a5\u56fe\u5df2\u751f\u6210\u3002"} \u603b\u7b49\u5f85 ${formatElapsed(Date.now() - waitStartedAt)}\u3002`;
+        statusText.classList.remove("is-loading");
+        stopWaitHeartbeat();
 
         readingImageUrl = data.image_url || `${API.result}?task_id=${encodeURIComponent(currentTaskId)}`;
         posterPreview.innerHTML = `<img src="${escapeAttribute(readingImageUrl)}" alt="精美海报风手相解读图" />`;
@@ -842,6 +887,7 @@
         clearTimeout(pollTimer);
         clearInterval(countdownTimer);
         clearTimedProgress();
+        stopWaitHeartbeat();
         currentTaskId = "";
         readingImageUrl = "";
         textHasRendered = false;
