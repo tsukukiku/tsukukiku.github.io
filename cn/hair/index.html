@@ -717,7 +717,9 @@
 
       const MAX_SIZE = 10 * 1024 * 1024;
       const REQUIRED_CODE = `${"HA"}${"IR"}`;
+      const STYLE20_CODE = `${"HA"}${"IR"}${"20"}`;
       const STYLE37_CODE = `${"HA"}${"IR"}${"37"}`;
+      const STYLE45_CODE = `${"HA"}${"IR"}${"45"}`;
       const STYLE49_CODE = `${"HA"}${"IR"}${"49"}`;
       const STYLE49P_CODE = `${"HA"}${"IR"}${"49"}${"P"}`;
       const HAIR_LANGUAGE = "cn";
@@ -832,7 +834,7 @@
         if (!uploadedFile || submitButton.disabled) return;
 
         const enteredCode = accessCode.value.trim().toUpperCase();
-        if (![REQUIRED_CODE, STYLE37_CODE, STYLE49_CODE, STYLE49P_CODE].includes(enteredCode)) {
+        if (![REQUIRED_CODE, STYLE20_CODE, STYLE37_CODE, STYLE45_CODE, STYLE49_CODE, STYLE49P_CODE].includes(enteredCode)) {
           statusText.textContent = "口令不正确，请确认后再提交。";
           return;
         }
@@ -880,19 +882,17 @@
         formData.append("lang", HAIR_LANGUAGE);
         formData.append("language", HAIR_LANGUAGE);
         const currentCode = accessCode.value.trim().toUpperCase();
-        const currentMode = [STYLE37_CODE, STYLE49_CODE, STYLE49P_CODE].includes(currentCode) ? currentCode : REQUIRED_CODE;
+        const currentMode = [STYLE20_CODE, STYLE37_CODE, STYLE45_CODE, STYLE49_CODE, STYLE49P_CODE].includes(currentCode) ? currentCode : REQUIRED_CODE;
         formData.append("mode", currentMode);
         formData.append("analysisPrompt", HAIR_PROMPT);
-        formData.append(
-          "templateName",
-          currentMode === STYLE37_CODE
-            ? "hair-style37-cn.png"
-            : currentMode === STYLE49_CODE
-              ? "hair-style49-cn.jpg"
-              : currentMode === STYLE49P_CODE
-                ? "hair-style49-cn.png"
-                : HAIR_TEMPLATE_NAME
-        );
+        const templateByMode = {
+          [STYLE20_CODE]: "hair-style20-cn.jpg",
+          [STYLE37_CODE]: "hair-style37-cn.png",
+          [STYLE45_CODE]: "hair-style45-cn.jpg",
+          [STYLE49_CODE]: "hair-style49-cn.jpg",
+          [STYLE49P_CODE]: "hair-style49-cn.png"
+        };
+        formData.append("templateName", templateByMode[currentMode] || HAIR_TEMPLATE_NAME);
 
         let response;
         try {
