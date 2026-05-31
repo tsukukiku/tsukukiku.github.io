@@ -1,0 +1,629 @@
+:root {
+  color-scheme: dark;
+  --bg: #10131b;
+  --panel: #181d28;
+  --panel-strong: #222838;
+  --line: rgba(255, 255, 255, 0.14);
+  --text: #f7f3ea;
+  --muted: #b9c0ce;
+  --accent: #e5b765;
+  --accent-2: #7ec7bd;
+  --accent-3: #d9879b;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.36);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(126, 199, 189, 0.18), transparent 30rem),
+    linear-gradient(135deg, #0e1118 0%, #161a24 48%, #221923 100%);
+  font-family:
+    "Microsoft YaHei",
+    "PingFang SC",
+    system-ui,
+    sans-serif;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 7, 12, 0.1) 0%,
+      rgba(5, 7, 12, 0.22) 42%,
+      rgba(5, 7, 12, 0.38) 100%
+    );
+}
+
+button,
+select {
+  font: inherit;
+}
+
+.zodiac-background-grid {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: clamp(240px, 31vw, 390px);
+  gap: 14px;
+  min-height: 100%;
+  pointer-events: none;
+}
+
+.zodiac-background-grid img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0.9;
+  filter: brightness(1.34) saturate(1.22) contrast(1.04);
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 42px;
+}
+
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.home-link {
+  min-height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: rgba(16, 19, 27, 0.28);
+  padding: 0 12px;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+}
+
+.home-link:hover,
+.home-link:focus-visible {
+  border-color: rgba(229, 183, 101, 0.82);
+  color: var(--accent);
+  outline: none;
+}
+
+.language-switcher {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.language-switcher button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: rgba(16, 19, 27, 0.28);
+  padding: 0 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.language-switcher button:hover,
+.language-switcher button:focus-visible,
+.language-switcher button.is-active {
+  border-color: rgba(229, 183, 101, 0.82);
+  color: var(--accent);
+  outline: none;
+}
+
+.sky-panel {
+  position: relative;
+  min-height: 330px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(16, 19, 27, 0.1);
+  backdrop-filter: blur(3px);
+  box-shadow: var(--shadow);
+}
+
+.sky-art span {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(229, 183, 101, 0.42);
+  border-radius: 50%;
+}
+
+.sky-art span:nth-child(1) {
+  top: 44px;
+  right: 94px;
+}
+
+.sky-art span:nth-child(2) {
+  top: 84px;
+  right: 132px;
+  width: 210px;
+  height: 210px;
+}
+
+.sky-art span:nth-child(3) {
+  bottom: -70px;
+  left: 8%;
+  width: 180px;
+  height: 180px;
+  border-color: rgba(126, 199, 189, 0.32);
+}
+
+.sky-art span:nth-child(4) {
+  bottom: 72px;
+  right: 26%;
+  width: 78px;
+  height: 78px;
+  border-color: rgba(217, 135, 155, 0.42);
+}
+
+.masthead {
+  position: relative;
+  max-width: 680px;
+  padding: 58px 48px 20px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 14px;
+  font-size: clamp(2.5rem, 7vw, 5.6rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.lead {
+  max-width: 520px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.controls {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 24px 48px 48px;
+}
+
+.controls label {
+  display: grid;
+  gap: 8px;
+  min-width: 170px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0 40px 0 14px;
+}
+
+.zodiac-section,
+.reading-panel {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(24, 29, 40, 0.14);
+  backdrop-filter: blur(4px);
+  box-shadow: var(--shadow);
+}
+
+.zodiac-section {
+  padding: 24px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin-bottom: 0;
+  font-size: 1.35rem;
+}
+
+.section-heading p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.zodiac-card {
+  min-height: 132px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.zodiac-card:hover,
+.zodiac-card:focus-visible,
+.zodiac-card.is-active {
+  transform: translateY(-3px);
+  border-color: rgba(229, 183, 101, 0.85);
+  background: linear-gradient(145deg, rgba(229, 183, 101, 0.18), rgba(126, 199, 189, 0.08));
+  outline: none;
+}
+
+.zodiac-symbol {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 2.35rem;
+  line-height: 1;
+}
+
+.zodiac-name {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.zodiac-date {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.reading-panel {
+  padding: 28px;
+}
+
+.reading-title {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.selected-symbol {
+  display: grid;
+  flex: 0 0 74px;
+  width: 74px;
+  height: 74px;
+  place-items: center;
+  border: 1px solid rgba(229, 183, 101, 0.72);
+  border-radius: 50%;
+  color: var(--accent);
+  background: rgba(229, 183, 101, 0.08);
+  font-size: 2.7rem;
+}
+
+.reading-title p {
+  margin-bottom: 6px;
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+.reading-title h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.6rem, 4vw, 2.55rem);
+}
+
+.card-draw {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(217, 135, 155, 0.28);
+  border-radius: 8px;
+  background: rgba(217, 135, 155, 0.12);
+}
+
+.card-draw h3 {
+  margin: 0 0 8px;
+  color: var(--accent-3);
+  font-size: 1rem;
+}
+
+.card-draw p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.draw-button {
+  min-width: 112px;
+  min-height: 46px;
+  border: 1px solid rgba(229, 183, 101, 0.72);
+  border-radius: 8px;
+  color: #151922;
+  background: var(--accent);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.draw-button:disabled {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: not-allowed;
+}
+
+.card-result {
+  position: relative;
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.close-card-button {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: var(--text);
+  background: rgba(16, 19, 27, 0.88);
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.close-card-button:hover,
+.close-card-button:focus-visible {
+  border-color: rgba(229, 183, 101, 0.82);
+  outline: none;
+}
+
+.download-card-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: 14px;
+  border: 1px solid rgba(229, 183, 101, 0.72);
+  border-radius: 8px;
+  color: #151922;
+  background: var(--accent);
+  padding: 0 18px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.download-card-button:hover,
+.download-card-button:focus-visible {
+  filter: brightness(1.08);
+  outline: none;
+}
+
+.card-result img {
+  display: block;
+  width: min(100%, 420px);
+  max-height: 620px;
+  object-fit: contain;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.card-result figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.fortune-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.month-note {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(126, 199, 189, 0.28);
+  border-radius: 8px;
+  background: rgba(126, 199, 189, 0.12);
+}
+
+.month-note h3 {
+  margin: 0 0 10px;
+  color: var(--accent-2);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.month-note p {
+  margin-bottom: 0;
+  color: #dfe7ef;
+  line-height: 1.8;
+}
+
+.conclusion-note {
+  border-color: rgba(229, 183, 101, 0.32);
+  background: rgba(229, 183, 101, 0.12);
+}
+
+.conclusion-note h3 {
+  color: var(--accent);
+}
+
+.fortune-list li {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: 18px;
+  min-height: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fortune-list h3 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.fortune-list p {
+  margin-bottom: 0;
+  color: #d9deea;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+@media (max-width: 980px) {
+  .zodiac-background-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+  }
+
+  .zodiac-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .zodiac-background-grid {
+    inset: 0 0 auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    grid-auto-rows: clamp(210px, 56vw, 330px);
+    gap: 8px;
+  }
+
+  .app-shell {
+    width: min(100% - 20px, 1180px);
+    padding-top: 10px;
+  }
+
+  .masthead {
+    padding: 36px 22px 12px;
+  }
+
+  .controls {
+    padding: 20px 22px 28px;
+  }
+
+  .controls label {
+    width: 100%;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading h2 {
+    margin-bottom: 6px;
+  }
+
+  .zodiac-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fortune-list li {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .zodiac-section,
+  .reading-panel {
+    padding: 16px;
+  }
+
+  .zodiac-card {
+    min-height: 118px;
+  }
+
+  .reading-title {
+    align-items: flex-start;
+  }
+
+  .card-draw {
+    grid-template-columns: 1fr;
+  }
+
+  .draw-button {
+    width: 100%;
+  }
+
+  .selected-symbol {
+    flex-basis: 60px;
+    width: 60px;
+    height: 60px;
+    font-size: 2.1rem;
+  }
+
+}
+
+@media (max-width: 430px) {
+  .zodiac-background-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: minmax(210px, 1fr);
+  }
+
+  .zodiac-grid {
+    grid-template-columns: 1fr;
+  }
+}
