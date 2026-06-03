@@ -849,6 +849,7 @@
     let current = null;
     let logoImage = null;
     let logoDataUrl = "";
+    let logoObjectUrl = "";
     const palettes = {
       purpleMint: { fg: "#6d168f", fg2: "#6d168f", bg: "#e7f2de", gradient: "none", caption: "solid" },
       violetWhite: { fg: "#9d00d6", fg2: "#7c3aed", bg: "#ffffff", gradient: "linear", caption: "gradient" },
@@ -1305,9 +1306,13 @@
       const ix = x + pad;
       const iy = y + pad;
       if (logoImage) {
-        roundedRect(ctx, ix, iy, inner, inner, Math.max(6, inner * 0.14));
-        ctx.clip();
-        ctx.drawImage(logoImage, ix, iy, inner, inner);
+        try {
+          roundedRect(ctx, ix, iy, inner, inner, Math.max(6, inner * 0.14));
+          ctx.clip();
+          ctx.drawImage(logoImage, ix, iy, inner, inner);
+        } catch (error) {
+          logoImage = null;
+        }
       } else {
         const text = (els.logoText.value || "LOGO").trim().slice(0, 8);
         ctx.fillStyle = makePaint(imageSize);
@@ -1317,6 +1322,13 @@
         ctx.fillText(text, imageSize / 2, imageSize / 2);
       }
       ctx.restore();
+    }
+
+    function clearLogoImage() {
+      if (logoObjectUrl && window.URL && window.URL.revokeObjectURL) window.URL.revokeObjectURL(logoObjectUrl);
+      logoObjectUrl = "";
+      logoImage = null;
+      logoDataUrl = "";
     }
 
     function makeCaptionPaint(width) {
@@ -1767,24 +1779,44 @@
     els.logoFile.addEventListener("change", () => {
       const file = els.logoFile.files && els.logoFile.files[0];
       if (!file) {
-        logoImage = null;
-        logoDataUrl = "";
+        clearLogoImage();
         els.logoFileName.textContent = "未选择图片";
         update();
         return;
       }
-      els.logoFileName.textContent = file.name || "已选择图片";
+
+      els.showLogo.checked = true;
+      if (!Number(els.logoSize.value)) {
+        els.logoSize.value = "10";
+        els.logoSizeNumber.value = "10";
+        renderLogoSizePills();
+      }
+      clearLogoImage();
+      els.logoFileName.textContent = "正在读取图片...";
+      update();
+
+      const image = new Image();
+      const objectUrl = window.URL && window.URL.createObjectURL ? window.URL.createObjectURL(file) : "";
+      if (objectUrl) logoObjectUrl = objectUrl;
+
+      image.addEventListener("load", () => {
+        logoImage = image;
+        els.logoFileName.textContent = file.name || "已选择图片";
+        update();
+      });
+      image.addEventListener("error", () => {
+        logoImage = null;
+        els.logoFileName.textContent = "图片读取失败";
+        update();
+      });
+
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         logoDataUrl = String(reader.result || "");
-        const image = new Image();
-        image.addEventListener("load", () => {
-          logoImage = image;
-          update();
-        });
-        image.src = logoDataUrl;
+        if (!objectUrl && logoDataUrl) image.src = logoDataUrl;
       });
       reader.readAsDataURL(file);
+      if (objectUrl) image.src = objectUrl;
     });
     els.png.addEventListener("click", () => {
       if (!current) return;
@@ -1819,8 +1851,7 @@
       els.captionSizeNumber.value = "28";
       els.logoFile.value = "";
       els.logoFileName.textContent = "未选择图片";
-      logoImage = null;
-      logoDataUrl = "";
+      clearLogoImage();
       renderPaletteCards();
       renderFinderCards();
       renderShapePills();
