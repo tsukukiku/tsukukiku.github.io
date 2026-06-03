@@ -199,6 +199,7 @@
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
       gap: 8px;
+      width: 100%;
     }
 
     .file-picker input[type="file"] {
@@ -617,11 +618,24 @@
       }
 
       #finderGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(6, minmax(0, 1fr));
       }
 
       #paletteGrid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .file-picker {
+        grid-template-columns: 1fr;
+      }
+
+      .file-button {
+        display: flex;
+        width: 100%;
+      }
+
+      .file-name {
+        min-height: 18px;
       }
     }
   </style>
@@ -676,8 +690,8 @@
             <label class="compact-field">
               <span>渐变</span>
               <select id="gradient">
-                <option value="none">纯色</option>
-                <option value="linear" selected>斜向渐变</option>
+                <option value="none" selected>纯色</option>
+                <option value="linear">斜向渐变</option>
                 <option value="radial">中心放射</option>
               </select>
             </label>
@@ -686,7 +700,7 @@
 
         <label class="finder-panel">
           <span>定位图案</span>
-          <input id="finderStyle" type="hidden" value="rounded">
+          <input id="finderStyle" type="hidden" value="classic">
           <div class="choice-grid" id="finderGrid" aria-label="定位图案图示"></div>
         </label>
 
@@ -694,7 +708,7 @@
           <span>QRcode 图案</span>
           <select id="shape" hidden>
             <option value="square">方块</option>
-            <option value="round" selected>圆角</option>
+            <option value="round">圆角</option>
             <option value="dot">圆点</option>
             <option value="diamond">菱形</option>
           </select>
@@ -721,8 +735,8 @@
           </label>
           <label>
             Logo 大小
-            <input id="logoSize" type="hidden" value="13">
-            <input id="logoSizeNumber" type="hidden" value="13">
+            <input id="logoSize" type="hidden" value="10">
+            <input id="logoSizeNumber" type="hidden" value="10">
             <div class="pill-row" id="logoSizePills" aria-label="Logo 大小"></div>
           </label>
         </div>
@@ -730,7 +744,7 @@
         <div class="logo-text-board">
           <div class="setting-column">
             <label class="check">
-              <input id="showLogo" type="checkbox" checked>
+              <input id="showLogo" type="checkbox">
               QRcode中央加入Logo
             </label>
             <label>
@@ -871,7 +885,7 @@
     };
     const sizeOptions = { 512: "512", 1024: "1024" };
     const marginOptions = { 2: "S", 4: "M", 6: "L" };
-    const logoSizeOptions = { 8: "S", 13: "M", 18: "L" };
+    const logoSizeOptions = { 7: "S", 10: "M", 13: "L" };
 
     const gf = (() => {
       const exp = new Array(512).fill(0);
@@ -892,28 +906,29 @@
       return gf.exp[gf.log[a] + gf.log[b]];
     }
 
-    function rsGenerator(degree) {
-      let poly = [1];
+    function rsDivisor(degree) {
+      const result = new Array(degree).fill(0);
+      result[degree - 1] = 1;
+      let root = 1;
       for (let i = 0; i < degree; i++) {
-        const next = new Array(poly.length + 1).fill(0);
-        for (let j = 0; j < poly.length; j++) {
-          next[j] ^= gfMul(poly[j], gf.exp[i]);
-          next[j + 1] ^= poly[j];
+        for (let j = 0; j < degree; j++) {
+          result[j] = gfMul(result[j], root);
+          if (j + 1 < degree) result[j] ^= result[j + 1];
         }
-        poly = next;
+        root = gfMul(root, 2);
       }
-      return poly;
+      return result;
     }
 
     function reedSolomon(data, degree) {
-      const gen = rsGenerator(degree);
-      const out = new Array(degree).fill(0);
+      const divisor = rsDivisor(degree);
+      const result = new Array(degree).fill(0);
       for (const byte of data) {
-        const factor = byte ^ out.shift();
-        out.push(0);
-        for (let i = 0; i < degree; i++) out[i] ^= gfMul(gen[i], factor);
+        const factor = byte ^ result.shift();
+        result.push(0);
+        for (let i = 0; i < degree; i++) result[i] ^= gfMul(divisor[i], factor);
       }
-      return out;
+      return result;
     }
 
     function bitsToBytes(bits) {
@@ -1035,26 +1050,31 @@
       }
     }
 
+    function getBit(value, index) {
+      return ((value >>> index) & 1) === 1;
+    }
+
     function formatBits(maskId) {
-      let data = (EC_BITS << 3) | maskId;
-      let value = data << 10;
-      const generator = 0x537;
-      for (let i = 14; i >= 10; i--) {
-        if ((value >>> i) & 1) value ^= generator << (i - 10);
+      const data = (EC_BITS << 3) | maskId;
+      let remainder = data;
+      for (let i = 0; i < 10; i++) {
+        remainder = (remainder << 1) ^ (((remainder >>> 9) & 1) ? 0x537 : 0);
       }
-      return ((data << 10) | value) ^ 0x5412;
+      return ((data << 10) | (remainder & 0x3ff)) ^ 0x5412;
     }
 
     function drawFormat(qr, maskId) {
       const size = qr.modules.length;
       const bits = formatBits(maskId);
-      const coordsA = [[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[7,8],[8,8],[8,7],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0]];
-      const coordsB = [[size-1,8],[size-2,8],[size-3,8],[size-4,8],[size-5,8],[size-6,8],[size-7,8],[8,size-8],[8,size-7],[8,size-6],[8,size-5],[8,size-4],[8,size-3],[8,size-2],[8,size-1]];
-      for (let i = 0; i < 15; i++) {
-        const on = ((bits >>> i) & 1) === 1;
-        setModule(qr, coordsA[i][0], coordsA[i][1], on);
-        setModule(qr, coordsB[i][0], coordsB[i][1], on);
-      }
+      for (let i = 0; i <= 5; i++) setModule(qr, 8, i, getBit(bits, i));
+      setModule(qr, 8, 7, getBit(bits, 6));
+      setModule(qr, 8, 8, getBit(bits, 7));
+      setModule(qr, 7, 8, getBit(bits, 8));
+      for (let i = 9; i < 15; i++) setModule(qr, 14 - i, 8, getBit(bits, i));
+
+      for (let i = 0; i < 8; i++) setModule(qr, size - 1 - i, 8, getBit(bits, i));
+      for (let i = 8; i < 15; i++) setModule(qr, 8, size - 15 + i, getBit(bits, i));
+      setModule(qr, 8, size - 8, true);
     }
 
     function penalty(modules) {
@@ -1569,7 +1589,8 @@
     }
 
     function syncLogoSize(fromNumber) {
-      const value = Math.max(0, Math.min(18, Number(fromNumber ? els.logoSizeNumber.value : els.logoSize.value) || 0));
+      const requested = Math.max(7, Math.min(13, Number(fromNumber ? els.logoSizeNumber.value : els.logoSize.value) || 10));
+      const value = [7, 10, 13].reduce((best, option) => Math.abs(option - requested) < Math.abs(best - requested) ? option : best, 10);
       els.logoSize.value = value;
       els.logoSizeNumber.value = value;
       update();
@@ -1625,7 +1646,9 @@
         button.title = paletteLabels[key];
         button.setAttribute("aria-label", paletteLabels[key]);
         button.innerHTML = `<span class="palette-demo" style="--p-fg:${palette.fg};--p-fg2:${palette.fg2};"><span style="background:${palette.bg}"></span><span style="background:${palette.fg}"></span></span>`;
-        button.addEventListener("click", () => {
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
           els.palette.value = key;
           applyPalette(key);
         });
@@ -1641,7 +1664,9 @@
         button.className = "choice-card";
         button.setAttribute("aria-pressed", String(els.finderStyle.value === key));
         button.innerHTML = `<span class="finder-demo" style="--f-bg:${els.bg.value};color:${els.fg.value}">${finderIcon(key)}</span><span>${label}</span>`;
-        button.addEventListener("click", () => {
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
           els.finderStyle.value = key;
           renderFinderCards();
           update();
@@ -1658,7 +1683,9 @@
         button.className = "pill-button";
         button.setAttribute("aria-pressed", String(els.shape.value === key));
         button.textContent = label;
-        button.addEventListener("click", () => {
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
           els.shape.value = key;
           renderShapePills();
           update();
@@ -1675,7 +1702,11 @@
         button.className = "pill-button";
         button.setAttribute("aria-pressed", String(String(selectedValue) === String(value)));
         button.textContent = label;
-        button.addEventListener("click", () => onPick(value));
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          onPick(value);
+        });
         container.append(button);
       });
     }
@@ -1771,15 +1802,15 @@
       els.fg.value = "#111827";
       els.fg2.value = "#14b8a6";
       els.bg.value = "#ffffff";
-      els.gradient.value = "linear";
-      els.finderStyle.value = "rounded";
-      els.shape.value = "round";
+      els.gradient.value = "none";
+      els.finderStyle.value = "classic";
+      els.shape.value = "square";
       els.size.value = "512";
       els.sizeNumber.value = "512";
       els.margin.value = "4";
-      els.logoSize.value = "13";
-      els.logoSizeNumber.value = "13";
-      els.showLogo.checked = true;
+      els.logoSize.value = "10";
+      els.logoSizeNumber.value = "10";
+      els.showLogo.checked = false;
       els.logoText.value = "LOGO";
       els.showCaption.checked = true;
       els.captionText.value = "扫码进入";
