@@ -124,7 +124,8 @@
       gap: 16px;
     }
 
-    label {
+    label,
+    .field {
       display: grid;
       gap: 4px;
       color: var(--ink);
@@ -168,6 +169,13 @@
       min-height: 40px;
       max-height: 64px;
       resize: none;
+    }
+
+    #logoText {
+      min-height: 44px;
+      max-height: 68px;
+      resize: none;
+      line-height: 1.25;
     }
 
     input[type="color"] {
@@ -260,8 +268,21 @@
       min-width: 0;
     }
 
-    .setting-column > label {
+    .setting-column > label,
+    .setting-column > .field {
       min-width: 0;
+    }
+
+    .logo-control-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .logo-control-row .pill-row {
+      flex-wrap: nowrap;
     }
 
     .style-board {
@@ -743,32 +764,35 @@
 
         <div class="logo-text-board">
           <div class="setting-column">
-            <label class="check">
-              <input id="showLogo" type="checkbox">
-              QRcode中央加入Logo
-            </label>
-            <label>
+            <div class="logo-control-row">
+              <label class="check">
+                <input id="showLogo" type="checkbox">
+                中央Logo
+              </label>
+              <input id="logoMode" type="hidden" value="image">
+              <div class="pill-row" id="logoModePills" aria-label="中央Logo类型"></div>
+            </div>
+            <div class="field" id="logoImageField">
               上传Logo图片
               <span class="file-picker">
                 <input id="logoFile" type="file" accept="image/*">
-                <span class="file-button" id="logoFileButton" role="button" tabindex="0">选择图片</span>
+                <label class="file-button" id="logoFileButton" for="logoFile" role="button" tabindex="0">选择图片</label>
                 <span class="file-name" id="logoFileName">未选择图片</span>
               </span>
-            </label>
+            </div>
             <label>
-              QRcode说明文字
               <span class="check">
                 <input id="showCaption" type="checkbox" checked>
-                显示说明文字
+                说明文字
               </span>
               <textarea id="captionText" maxlength="72" rows="2" placeholder="最多两行说明文字">扫码进入</textarea>
             </label>
           </div>
 
           <div class="setting-column">
-            <label>
+            <label id="logoTextField">
               文字Logo
-              <input id="logoText" type="text" maxlength="8" value="LOGO" placeholder="请填写文字Logo">
+              <textarea id="logoText" maxlength="12" rows="2" placeholder="请填写文字Logo">LOGO</textarea>
             </label>
             <label>
               文字颜色
@@ -827,9 +851,13 @@
       logoSizeNumber: document.getElementById("logoSizeNumber"),
       logoSizePills: document.getElementById("logoSizePills"),
       showLogo: document.getElementById("showLogo"),
+      logoMode: document.getElementById("logoMode"),
+      logoModePills: document.getElementById("logoModePills"),
+      logoImageField: document.getElementById("logoImageField"),
       logoFile: document.getElementById("logoFile"),
       logoFileButton: document.getElementById("logoFileButton"),
       logoFileName: document.getElementById("logoFileName"),
+      logoTextField: document.getElementById("logoTextField"),
       logoText: document.getElementById("logoText"),
       showCaption: document.getElementById("showCaption"),
       captionText: document.getElementById("captionText"),
@@ -887,6 +915,7 @@
     const sizeOptions = { 512: "512", 1024: "1024" };
     const marginOptions = { 2: "S", 4: "M", 6: "L" };
     const logoSizeOptions = { 7: "S", 10: "M", 13: "L" };
+    const logoModeOptions = { image: "图片", text: "文字" };
 
     const gf = (() => {
       const exp = new Array(512).fill(0);
@@ -1285,9 +1314,37 @@
       ctx.restore();
     }
 
+    function logoLines() {
+      const raw = (els.logoText.value || "LOGO").trim();
+      const manual = raw.split(/\r?\n/).map(line => line.replace(/\s+/g, "").trim()).filter(Boolean);
+      if (manual.length > 1) {
+        return [manual[0], manual.slice(1).join("")].map(line => Array.from(line).slice(0, 6).join("")).filter(Boolean).slice(0, 2);
+      }
+      const chars = Array.from(raw.replace(/\s+/g, "") || "LOGO").slice(0, 12);
+      if (chars.length <= 3) return [chars.join("")];
+      const split = Math.floor(chars.length / 2);
+      return [chars.slice(0, split).join(""), chars.slice(split).join("")];
+    }
+
+    function fitLogoText(lines, inner) {
+      const maxWidth = inner * 0.82;
+      const maxHeight = inner * 0.72;
+      let size = Math.floor(lines.length > 1 ? inner * 0.38 : inner * 0.52);
+      while (size > 7) {
+        ctx.font = `850 ${size}px Inter, sans-serif`;
+        const widest = Math.max(...lines.map(line => ctx.measureText(line).width));
+        const totalHeight = size * (lines.length > 1 ? 1.08 * lines.length : 1);
+        if (widest <= maxWidth && totalHeight <= maxHeight) break;
+        size -= 1;
+      }
+      return Math.max(7, size);
+    }
+
     function drawLogo(imageSize) {
       const percent = Number(els.logoSize.value);
       if (!els.showLogo.checked || percent <= 0) return;
+      const isImageMode = els.logoMode.value === "image";
+      if (isImageMode && !logoImage) return;
       const logoBox = Math.round(imageSize * (percent / 100));
       if (logoBox < 18) return;
       const pad = Math.round(logoBox * 0.1);
@@ -1305,7 +1362,7 @@
       const inner = outer - pad * 2;
       const ix = x + pad;
       const iy = y + pad;
-      if (logoImage) {
+      if (isImageMode && logoImage) {
         try {
           roundedRect(ctx, ix, iy, inner, inner, Math.max(6, inner * 0.14));
           ctx.clip();
@@ -1314,12 +1371,17 @@
           logoImage = null;
         }
       } else {
-        const text = (els.logoText.value || "LOGO").trim().slice(0, 8);
+        const lines = logoLines();
+        const fontSize = fitLogoText(lines, inner);
+        const lineHeight = fontSize * 1.08;
+        const firstY = imageSize / 2 - ((lines.length - 1) * lineHeight) / 2;
         ctx.fillStyle = makePaint(imageSize);
-        ctx.font = `800 ${Math.max(11, Math.floor(inner / Math.max(2.5, text.length * 0.72)))}px Inter, sans-serif`;
+        ctx.font = `850 ${fontSize}px Inter, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(text, imageSize / 2, imageSize / 2);
+        lines.forEach((line, index) => {
+          ctx.fillText(line, imageSize / 2, firstY + index * lineHeight);
+        });
       }
       ctx.restore();
     }
@@ -1329,6 +1391,10 @@
       logoObjectUrl = "";
       logoImage = null;
       logoDataUrl = "";
+    }
+
+    function escapeSvgText(text) {
+      return text.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     }
 
     function makeCaptionPaint(width) {
@@ -1511,13 +1577,17 @@
       ].join("");
       const logoPercent = Number(els.logoSize.value);
       let logo = "";
-      if (els.showLogo.checked && logoPercent > 0) {
+      if (els.showLogo.checked && logoPercent > 0 && (els.logoMode.value === "text" || logoDataUrl)) {
         const outer = modules * (logoPercent / 100) * 1.2;
         const x = (modules - outer) / 2;
         const y = (modules - outer) / 2;
-        const text = (els.logoText.value || "LOGO").trim().slice(0, 8);
-        const image = logoDataUrl ? `<image href="${logoDataUrl}" x="${x + outer * 0.09}" y="${y + outer * 0.09}" width="${outer * 0.82}" height="${outer * 0.82}" preserveAspectRatio="xMidYMid slice"/>` : "";
-        const label = !logoDataUrl ? `<text x="${modules / 2}" y="${modules / 2}" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-size="${Math.max(1.4, outer / Math.max(2.4, text.length * 0.72))}" font-weight="800" fill="${fill}">${text.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]))}</text>` : "";
+        const image = els.logoMode.value === "image" && logoDataUrl ? `<image href="${logoDataUrl}" x="${x + outer * 0.09}" y="${y + outer * 0.09}" width="${outer * 0.82}" height="${outer * 0.82}" preserveAspectRatio="xMidYMid slice"/>` : "";
+        const logoTextLines = logoLines();
+        const maxLogoChars = Math.max(...logoTextLines.map(line => Array.from(line).length));
+        const logoFontSize = Math.max(1.2, Math.min(outer * (logoTextLines.length > 1 ? 0.34 : 0.52), (outer * 0.76) / Math.max(1, maxLogoChars * 0.58)));
+        const logoLineHeight = logoFontSize * 1.08;
+        const logoFirstY = modules / 2 - ((logoTextLines.length - 1) * logoLineHeight) / 2;
+        const label = els.logoMode.value === "text" ? `<text dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-size="${logoFontSize}" font-weight="850" fill="${fill}">${logoTextLines.map((line, index) => `<tspan x="${modules / 2}" y="${logoFirstY + index * logoLineHeight}">${escapeSvgText(line)}</tspan>`).join("")}</text>` : "";
         logo = `<rect x="${x}" y="${y}" width="${outer}" height="${outer}" rx="${outer * 0.16}" fill="${els.bg.value}" stroke="rgba(22,33,31,.18)" stroke-width=".08"/>${image}${label}`;
       }
       let caption = "";
@@ -1749,6 +1819,22 @@
       });
     }
 
+    function syncLogoModeFields() {
+      const imageMode = els.logoMode.value !== "text";
+      els.logoMode.value = imageMode ? "image" : "text";
+      els.logoImageField.hidden = !imageMode;
+      els.logoTextField.hidden = imageMode;
+    }
+
+    function renderLogoModePills() {
+      renderValuePills(els.logoModePills, logoModeOptions, els.logoMode.value, value => {
+        els.logoMode.value = value;
+        renderLogoModePills();
+        syncLogoModeFields();
+        update();
+      });
+    }
+
     els.content.addEventListener("input", update);
     els.fg.addEventListener("input", () => { markCustomPalette(); renderFinderCards(); update(); });
     els.fg2.addEventListener("input", () => { markCustomPalette(); update(); });
@@ -1759,6 +1845,7 @@
     els.shape.addEventListener("change", () => { renderShapePills(); update(); });
     els.margin.addEventListener("change", () => { renderMarginPills(); update(); });
     els.showLogo.addEventListener("change", update);
+    els.logoMode.addEventListener("change", () => { renderLogoModePills(); syncLogoModeFields(); update(); });
     els.logoText.addEventListener("input", update);
     els.showCaption.addEventListener("change", update);
     els.captionText.addEventListener("input", update);
@@ -1769,14 +1856,13 @@
     els.sizeNumber.addEventListener("change", () => { renderSizePills(); update(); });
     els.logoSize.addEventListener("change", () => { renderLogoSizePills(); update(); });
     els.logoSizeNumber.addEventListener("change", () => { renderLogoSizePills(); update(); });
-    els.logoFileButton.addEventListener("click", () => els.logoFile.click());
     els.logoFileButton.addEventListener("keydown", event => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         els.logoFile.click();
       }
     });
-    els.logoFile.addEventListener("change", () => {
+    function handleLogoFileChange() {
       const file = els.logoFile.files && els.logoFile.files[0];
       if (!file) {
         clearLogoImage();
@@ -1786,6 +1872,9 @@
       }
 
       els.showLogo.checked = true;
+      els.logoMode.value = "image";
+      renderLogoModePills();
+      syncLogoModeFields();
       if (!Number(els.logoSize.value)) {
         els.logoSize.value = "10";
         els.logoSizeNumber.value = "10";
@@ -1817,7 +1906,10 @@
       });
       reader.readAsDataURL(file);
       if (objectUrl) image.src = objectUrl;
-    });
+    }
+
+    els.logoFile.addEventListener("change", handleLogoFileChange);
+    els.logoFile.addEventListener("input", handleLogoFileChange);
     els.png.addEventListener("click", () => {
       if (!current) return;
       const a = document.createElement("a");
@@ -1843,6 +1935,7 @@
       els.logoSize.value = "10";
       els.logoSizeNumber.value = "10";
       els.showLogo.checked = false;
+      els.logoMode.value = "image";
       els.logoText.value = "LOGO";
       els.showCaption.checked = true;
       els.captionText.value = "扫码进入";
@@ -1858,6 +1951,8 @@
       renderSizePills();
       renderMarginPills();
       renderLogoSizePills();
+      renderLogoModePills();
+      syncLogoModeFields();
       update();
     });
 
@@ -1867,6 +1962,8 @@
     renderSizePills();
     renderMarginPills();
     renderLogoSizePills();
+    renderLogoModePills();
+    syncLogoModeFields();
     update();
   </script>
 </body>
