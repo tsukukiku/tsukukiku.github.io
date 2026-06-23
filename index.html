@@ -307,36 +307,6 @@
       min-width: 0;
     }
 
-    .tool-pill {
-      cursor: default;
-    }
-
-    .tool-copy {
-      display: grid;
-      gap: 3px;
-      min-width: 0;
-    }
-
-    .tool-select {
-      width: 100%;
-      min-width: 0;
-      border: 1px solid rgba(200, 148, 85, 0.22);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.86);
-      color: var(--muted);
-      padding: 3px 24px 3px 8px;
-      font: inherit;
-      font-size: 0.68rem;
-      font-weight: 800;
-      line-height: 1.1;
-      outline: none;
-    }
-
-    .tool-select:focus-visible {
-      border-color: rgba(200, 148, 85, 0.62);
-      box-shadow: 0 0 0 2px rgba(200, 148, 85, 0.14);
-    }
-
     .mini-link {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -654,20 +624,6 @@
           <span class="link-path">/life/image-analysis</span>
           <span class="arrow" aria-hidden="true">›</span>
         </a>
-        <div class="link-pill tool-pill" role="group" aria-label="快捷工具">
-          <img class="link-icon" src="assets/gateway-icons/gear.png" alt="" aria-hidden="true" />
-          <div class="tool-copy">
-            <span class="link-title">快捷工具</span>
-            <select class="tool-select" data-tool-select aria-label="快捷工具选择">
-              <option value="" selected disabled hidden>选择工具</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode.html">静态二维码制作</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode2.html">动态二维码制作</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode4.html">交替动态QRcode</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode3.html">趣味二维码制作</option>
-            </select>
-          </div>
-          <span class="arrow" aria-hidden="true">›</span>
-        </div>
       </div>
     </section>
 
@@ -747,12 +703,24 @@
           <span class="arrow" aria-hidden="true">›</span>
         </a>
         <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
+          <img class="link-icon" src="assets/gateway-icons/scientist.svg" alt="" aria-hidden="true" />
+          <span class="link-title">科学家</span>
+          <span class="link-path">/ask3/scientist</span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
+          <img class="link-icon" src="assets/gateway-icons/music.png" alt="" aria-hidden="true" />
+          <span class="link-title">作曲家</span>
+          <span class="link-path">/ask3/composer</span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
           <img class="link-icon" src="assets/gateway-icons/translate.png" alt="" aria-hidden="true" />
           <span class="link-title">翻译家</span>
           <span class="link-path">/ask3/translator</span>
           <span class="arrow" aria-hidden="true">›</span>
         </a>
-        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
+        <a class="mini-link" href="https://finan.star-style-studio.net/index.html">
           <img class="link-icon" src="assets/gateway-icons/finance.png" alt="" aria-hidden="true" />
           <span class="link-title">金融家</span>
           <span class="link-path">/ask3/finance</span>
@@ -782,12 +750,5 @@
 
     <p class="footer-line">AI 智能驱动・多维探索・赋能生活</p>
   </main>
-  <script>
-    document.querySelectorAll("[data-tool-select]").forEach(select => {
-      select.addEventListener("change", () => {
-        if (select.value) window.location.href = select.value;
-      });
-    });
-  </script>
 </body>
 </html>
