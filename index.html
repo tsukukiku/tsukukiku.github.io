@@ -660,6 +660,25 @@
     .section-card:has(.tool-menu[open]) { position: relative; z-index: 10; }
     .tool-pill:has(.tool-menu[open]) { position: relative; z-index: 20; transform: none; }
     .tool-pill:has(.tool-menu[open]):hover { transform: none; }
+
+    @media (max-width: 720px) {
+      .tool-menu-list[aria-label="快捷工具选择"] {
+        left: var(--mobile-menu-left, 0px);
+        right: auto;
+        width: var(--mobile-menu-width, calc(100vw - 2px));
+        min-width: 0;
+        max-width: none;
+        padding: 2px;
+        border-radius: 6px;
+      }
+      .tool-menu-list[aria-label="快捷工具选择"] a {
+        padding: 0 6px;
+        font-size: 12px;
+        line-height: 16px;
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+    }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940567227813698" crossorigin="anonymous"></script>
 </head>
@@ -886,6 +905,26 @@
   </main>
   <script>
     const toolMenus = [...document.querySelectorAll(".tool-menu")];
+    function positionMobileQuickMenu() {
+      const list = document.querySelector('.tool-menu-list[aria-label="快捷工具选择"]');
+      if (!list) return;
+      const menu = list.closest(".tool-menu");
+      if (!menu.open || !window.matchMedia("(max-width: 720px)").matches) return;
+      const viewport = window.visualViewport;
+      const viewportLeft = viewport ? viewport.offsetLeft : 0;
+      const viewportWidth = viewport ? viewport.width : document.documentElement.clientWidth;
+      // Absolute positioning stays anchored vertically to the trigger, even inside a backdrop-filter card.
+      const origin = menu.getBoundingClientRect().left;
+      list.style.setProperty("--mobile-menu-left", `${viewportLeft - origin}px`);
+      list.style.setProperty("--mobile-menu-width", `${Math.max(0, viewportWidth - 1)}px`);
+    }
+    toolMenus.forEach(menu => menu.addEventListener("toggle", positionMobileQuickMenu));
+    window.addEventListener("resize", positionMobileQuickMenu);
+    window.addEventListener("scroll", positionMobileQuickMenu, { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", positionMobileQuickMenu);
+      window.visualViewport.addEventListener("scroll", positionMobileQuickMenu);
+    }
     toolMenus.forEach(menu => {
       menu.querySelector("summary").addEventListener("click", () => {
         if (!menu.open) toolMenus.forEach(other => { if (other !== menu) other.open = false; });
