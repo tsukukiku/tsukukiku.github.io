@@ -619,6 +619,47 @@
         padding: 12px;
       }
     }
+
+    /* Compact menus: 20px text line + 1px padding on each side. */
+    .tool-menu { position: relative; min-width: 0; }
+    .tool-menu > summary { cursor: pointer; list-style: none; }
+    .tool-menu > summary::-webkit-details-marker { display: none; }
+    .tool-menu > summary::after { content: "⌄"; position: absolute; right: 8px; }
+    .tool-menu[open] > summary::after { content: "⌃"; }
+    .tool-menu-list {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      z-index: 30;
+      width: max-content;
+      min-width: 100%;
+      max-width: min(440px, calc(100vw - 56px));
+      max-height: min(240px, 55vh);
+      overflow-y: auto;
+      padding: 4px;
+      border: 1px solid rgba(200, 148, 85, 0.35);
+      border-radius: 10px;
+      background: #fffdf9;
+      box-shadow: 0 8px 24px rgba(72, 54, 38, 0.18);
+    }
+    .tool-menu-list a {
+      display: block;
+      padding: 1px 7px;
+      font-size: 12px;
+      line-height: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+      border-radius: 5px;
+    }
+    .tool-menu-list a:hover, .tool-menu-list a:focus-visible {
+      background: #f5eadb;
+      outline: 1px solid var(--gold);
+      outline-offset: -1px;
+    }
+    .section-card:has(.tool-menu[open]) { position: relative; z-index: 10; }
+    .tool-pill:has(.tool-menu[open]) { position: relative; z-index: 20; transform: none; }
+    .tool-pill:has(.tool-menu[open]):hover { transform: none; }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940567227813698" crossorigin="anonymous"></script>
 </head>
@@ -668,12 +709,15 @@
           <img class="link-icon" src="assets/gateway-icons/vr.png" alt="" aria-hidden="true" />
           <div class="tool-copy">
             <span class="link-title">游戏专区</span>
-            <select class="tool-select" data-tool-select aria-label="游戏专区选择">
-              <option value="" selected disabled hidden>选择游戏</option>
-              <option value="https://ww2.star-style-studio.net/">1. ww2 空战</option>
-              <option value="https://www.star-style-studio.net/redstorm/RSmobi4s.html">2. 红色风暴（智谱 5.3 flash）</option>
-              <option value="https://www.star-style-studio.net/games/pong-war.html">3. Pongwars（蚂蚁百灵 2.6 flash）</option>
-            </select>
+            <details class="tool-menu">
+              <summary class="tool-select" aria-label="游戏专区选择">选择游戏</summary>
+              <nav class="tool-menu-list" aria-label="游戏专区选择">
+                <a href="https://ww2.star-style-studio.net/">1. ww2 空战</a>
+                <a href="https://www.star-style-studio.net/redstorm/RSmobi4s.html">2. 红色风暴（智谱5.3flash）</a>
+                <a href="https://www.star-style-studio.net/games/pong-war.html">3. Pongwars（蚂蚁百灵2.6flash）</a>
+                <a href="https://www.star-style-studio.net/games/HellgateMobile.html">4. 地狱之门（Opus 5.5）</a>
+              </nav>
+            </details>
           </div>
           <span class="arrow" aria-hidden="true">⌄</span>
         </div>
@@ -681,16 +725,18 @@
           <img class="link-icon" src="assets/gateway-icons/gear.png" alt="" aria-hidden="true" />
           <div class="tool-copy">
             <span class="link-title">快捷工具</span>
-            <select class="tool-select" data-tool-select aria-label="快捷工具选择">
-              <option value="" selected disabled hidden>选择工具</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode.html">1. 静态二维码制作</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode2.html">2. 动态二维码制作</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode4.html">3. 交替动态QRcode</option>
-              <option value="https://qrcode.star-style-studio.net/QRcode3.html">4. 趣味二维码制作</option>
-              <option value="https://www.star-style-studio.net/tools/YTSound.html">5. 纯音频听油管（蚂蚁百灵 2.6 flash）</option>
-              <option value="https://www.star-style-studio.net/Tutors/LRC.html">6. LRC标记工具</option>
-              <option value="https://www.star-style-studio.net/tools/PDF_Title_Renamer_Lite_PythonRequired.zip">7. PDF自动更名（需Python 3.12）</option>
-            </select>
+            <details class="tool-menu">
+              <summary class="tool-select" aria-label="快捷工具选择">选择工具</summary>
+              <nav class="tool-menu-list" aria-label="快捷工具选择">
+                <a href="https://qrcode.star-style-studio.net/QRcode.html">1. 静态二维码制作</a>
+                <a href="https://qrcode.star-style-studio.net/QRcode2.html">2. 动态二维码制作</a>
+                <a href="https://qrcode.star-style-studio.net/QRcode4.html">3. 交替动态QRcode</a>
+                <a href="https://qrcode.star-style-studio.net/QRcode3.html">4. 趣味二维码制作</a>
+                <a href="https://www.star-style-studio.net/tools/YTSound.html">5. 纯音频听油管（蚂蚁百灵2.6flash）</a>
+                <a href="https://www.star-style-studio.net/Tutors/LRC.html">6. LRC标记工具</a>
+                <a href="http://www.star-style-studio.net/tools/PDF_Title_Renamer_Lite_PythonRequired.zip">7. PDF自动更名（需Python 3.12）</a>
+              </nav>
+            </details>
           </div>
           <span class="arrow" aria-hidden="true">⌄</span>
         </div>
@@ -698,16 +744,18 @@
           <img class="link-icon" src="assets/gateway-icons/scientist.svg" alt="" aria-hidden="true" />
           <div class="tool-copy">
             <span class="link-title">工程工具</span>
-            <select class="tool-select" data-tool-select aria-label="工程工具选择">
-              <option value="" selected disabled hidden>选择工程工具</option>
-              <option value="https://www.star-style-studio.net/tools/indexfiber.html">1. 光纤变模</option>
-              <option value="https://www.star-style-studio.net/tools/indexCVD8h.html">2. CVD 炉演示（智谱 5.3 flash）</option>
-              <option value="https://www.star-style-studio.net/tools/indexSEMtrench_mvp_v7.html">3. SEM沟槽测量（初版 Gemini FLash）</option>
-              <option value="https://www.star-style-studio.net/tools/trench_cvd_fill_v1.html">4. CVD沟槽填埋</option>
-              <option value="https://www.star-style-studio.net/tools/PhotoADJ/index.html">5. 简易照片梯形修正（GPT 6-Astra）</option>
-              <option value="https://www.star-style-studio.net/tools/PhotoADJ.zip">6. 高阶照片梯形修正（Gemini 3.1 Pro）</option>
-              <option value="https://www.star-style-studio.net/tools/VideoADJ.zip">7. 高阶MOV梯形修正（Gemini 3.1 Pro）</option>
-            </select>
+            <details class="tool-menu">
+              <summary class="tool-select" aria-label="工程工具选择">选择工程工具</summary>
+              <nav class="tool-menu-list" aria-label="工程工具选择">
+                <a href="https://www.star-style-studio.net/tools/indexfiber.html">1. 光纤变模</a>
+                <a href="https://www.star-style-studio.net/tools/indexCVD8h.html">2. CVD 炉演示（智谱5.3flash）</a>
+                <a href="https://www.star-style-studio.net/tools/indexSEMtrench_mvp_v7.html">3. SEM沟槽测量（初版GeminiFLash）</a>
+                <a href="https://www.star-style-studio.net/tools/trench_cvd_fill_v1.html">4. CVD沟槽填埋</a>
+                <a href="https://github.com/tsukukiku/tools/tree/main/PhotoADJ">5. 简易照片梯形修正（GPT6-Astra）</a>
+                <a href="https://raw.githubusercontent.com/tsukukiku/tools/main/PhotoADJ.zip">6. 高阶照片梯形修正（Gemini3.1Pro）</a>
+                <a href="https://raw.githubusercontent.com/tsukukiku/tools/main/VideoADJ.zip">7. 高阶MOV梯形修正（Gemini3.1Pro）</a>
+              </nav>
+            </details>
           </div>
           <span class="arrow" aria-hidden="true">⌄</span>
         </div>
@@ -837,10 +885,21 @@
     <p class="footer-line">AI 智能驱动・多维探索・赋能生活</p>
   </main>
   <script>
-    document.querySelectorAll("[data-tool-select]").forEach(select => {
-      select.addEventListener("change", () => {
-        if (select.value) window.location.href = select.value;
+    const toolMenus = [...document.querySelectorAll(".tool-menu")];
+    toolMenus.forEach(menu => {
+      menu.querySelector("summary").addEventListener("click", () => {
+        if (!menu.open) toolMenus.forEach(other => { if (other !== menu) other.open = false; });
       });
+      menu.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          menu.open = false;
+          menu.querySelector("summary").focus();
+        }
+      });
+      menu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => { menu.open = false; }));
+    });
+    document.addEventListener("click", event => {
+      toolMenus.forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
     });
   </script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"0829df47503149ad899f4819cade6d5e","r":1}' crossorigin="anonymous"></script>
