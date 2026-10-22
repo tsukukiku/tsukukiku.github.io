@@ -914,8 +914,11 @@
       const viewportWidth = viewport ? viewport.width : document.documentElement.clientWidth;
       // Absolute positioning stays anchored vertically to the trigger, even inside a backdrop-filter card.
       const origin = menu.getBoundingClientRect().left;
-      list.style.setProperty("--mobile-menu-left", `${viewportLeft - origin}px`);
-      list.style.setProperty("--mobile-menu-width", `${Math.max(0, Math.min(440, viewportWidth - 2))}px`);
+      const pillLeft = menu.closest(".tool-pill").getBoundingClientRect().left;
+      const alignedLeft = Math.max(viewportLeft, pillLeft);
+      const availableWidth = Math.max(0, viewportLeft + viewportWidth - alignedLeft - 2);
+      list.style.setProperty("--mobile-menu-left", `${alignedLeft - origin}px`);
+      list.style.setProperty("--mobile-menu-width", `${Math.min(440, availableWidth)}px`);
     }
     toolMenus.forEach(menu => menu.addEventListener("toggle", positionMobileQuickMenu));
     window.addEventListener("resize", positionMobileQuickMenu);
