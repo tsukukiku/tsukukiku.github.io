@@ -1,950 +1,192 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>星运占台 | Star Style Studio</title>
-  <meta name="description" content="Star Style Studio multilingual AI gateway for life, 3D visualization, and expert mini tools." />
-  <meta name="theme-color" content="#f7f2ee" />
-  <link rel="icon" type="image/png" href="assets/site-logo.png" />
-  <link rel="apple-touch-icon" href="assets/site-logo.png" />
-  <script src="/analytics.js"></script>
-  <style>
-    :root {
-      color-scheme: light;
-      --ink: #17151f;
-      --muted: #6f6874;
-      --line: rgba(118, 96, 75, 0.18);
-      --gold: #c89455;
-      --gold-dark: #9c6d36;
-      --blue: #2f68b2;
-      --blue-soft: rgba(69, 126, 190, 0.12);
-      --purple: #7b5fb0;
-      --purple-soft: rgba(126, 98, 180, 0.12);
-      --panel: rgba(255, 255, 255, 0.78);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.88)),
-        url("assets/gateway-bg-soft.png") center top / cover no-repeat;
-    }
-
-    .page {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: clamp(30px, 5.8vw, 70px) 0 42px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-
-    .brand-logo {
-      width: clamp(84px, 11vw, 118px);
-      height: clamp(84px, 11vw, 118px);
-      display: block;
-      margin: 0 auto 22px;
-      border-radius: 30px;
-      object-fit: cover;
-      box-shadow: 0 18px 46px rgba(104, 78, 48, 0.20);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2.35rem, 6vw, 4.6rem);
-      line-height: 1.02;
-      letter-spacing: 0;
-      font-weight: 900;
-    }
-
-    .title-suffix {
-      color: rgba(23, 21, 31, 0.42);
-      font-size: 0.52em;
-      font-weight: 700;
-    }
-
-    .tagline {
-      max-width: 680px;
-      margin: 15px auto 10px;
-      color: rgba(23, 21, 31, 0.66);
-      font-family: Arial, sans-serif;
-      font-size: clamp(0.72rem, 1.7vw, 0.96rem);
-      font-weight: 700;
-      letter-spacing: 0;
-      line-height: 1.35;
-    }
-
-    .subline {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      margin: 6px 0 26px;
-      color: rgba(23, 21, 31, 0.58);
-      font-size: clamp(1rem, 2.1vw, 1.25rem);
-      font-weight: 800;
-      letter-spacing: 0.18em;
-    }
-
-    .subline::before,
-    .subline::after,
-    .footer-line::before,
-    .footer-line::after {
-      content: "";
-      width: 44px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .languages {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, auto));
-      justify-content: center;
-      gap: 6px;
-      margin: 0 auto;
-    }
-
-    .language-button {
-      min-width: 66px;
-      padding: 3px 6px;
-      border: 1px solid rgba(128, 109, 88, 0.18);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.78);
-      color: #1f1c25;
-      box-shadow: 0 6px 14px rgba(72, 54, 38, 0.08);
-      font-size: 0.76rem;
-      font-weight: 900;
-      line-height: 1.1;
-      text-align: center;
-      white-space: nowrap;
-      backdrop-filter: blur(14px);
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-    }
-
-    .section-card {
-      display: grid;
-      grid-template-columns: 0.42fr 0.58fr;
-      gap: clamp(20px, 4vw, 42px);
-      align-items: center;
-      margin: 16px 0;
-      padding: clamp(17px, 2.8vw, 26px);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.76);
-      box-shadow: 0 18px 48px rgba(93, 72, 55, 0.10);
-      backdrop-filter: blur(18px);
-    }
-
-    .section-card.life {
-      border-color: rgba(200, 148, 85, 0.34);
-      background:
-        linear-gradient(135deg, rgba(255, 252, 247, 0.92), rgba(255, 255, 255, 0.76)),
-        radial-gradient(circle at 16% 16%, rgba(245, 211, 169, 0.34), transparent 38%);
-    }
-
-    .section-card.threed {
-      border-color: rgba(78, 132, 196, 0.30);
-      background:
-        linear-gradient(135deg, rgba(248, 252, 255, 0.94), rgba(255, 255, 255, 0.76)),
-        radial-gradient(circle at 13% 18%, rgba(111, 173, 229, 0.18), transparent 42%);
-    }
-
-    .section-card.ask {
-      grid-template-columns: 0.38fr 0.62fr;
-      border-color: rgba(126, 98, 180, 0.26);
-      background:
-        linear-gradient(135deg, rgba(254, 251, 255, 0.94), rgba(255, 255, 255, 0.76)),
-        radial-gradient(circle at 13% 18%, rgba(164, 128, 210, 0.18), transparent 42%);
-    }
-
-    .section-intro {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 22px;
-      align-items: center;
-      min-width: 0;
-    }
-
-    .section-card.ask .section-intro {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      width: fit-content;
-      margin-inline: auto;
-      text-align: left;
-    }
-
-    .orb {
-      width: clamp(90px, 12vw, 132px);
-      height: clamp(90px, 12vw, 132px);
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-    }
-
-    .orb-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      filter: drop-shadow(0 14px 24px rgba(93, 72, 55, 0.10));
-    }
-
-    .ask .orb {
-      margin: 0;
-    }
-
-    .section-title {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: baseline;
-      margin: 0 0 10px;
-      font-family: Georgia, "Times New Roman", "Noto Serif CJK SC", serif;
-      font-size: clamp(2rem, 4.4vw, 3rem);
-      line-height: 1.05;
-      font-weight: 700;
-    }
-
-    .threed .section-title {
-      color: #163d78;
-      font-family: "Arial Narrow", Arial, sans-serif;
-    }
-
-    .ask .section-title {
-      color: #4f3b7e;
-      justify-content: flex-start;
-      white-space: nowrap;
-    }
-
-    .section-title span {
-      color: var(--gold-dark);
-      font-size: 0.58em;
-      font-weight: 500;
-    }
-
-    .life .section-title span {
-      font-family: Arial, sans-serif;
-    }
-
-    .threed .section-title span {
-      color: #2f68b2;
-    }
-
-    .section-copy {
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(1rem, 2vw, 1.12rem);
-      font-weight: 700;
-    }
-
-    .links {
-      display: grid;
-      gap: 9px;
-      min-width: 0;
-    }
-
-    .links.two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .links.ask-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 9px;
-    }
-
-    .more-label {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      color: var(--purple);
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      margin: 4px 0;
-    }
-
-    .more-label::before,
-    .more-label::after {
-      content: "";
-      height: 1px;
-      width: min(190px, 24vw);
-      background: linear-gradient(90deg, transparent, rgba(126, 98, 180, 0.45), transparent);
-    }
-
-    .link-pill,
-    .mini-link {
-      border: 1px solid rgba(200, 148, 85, 0.22);
-      background: rgba(255, 255, 255, 0.70);
-      box-shadow: 0 8px 18px rgba(93, 72, 55, 0.08);
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-    }
-
-    .link-pill {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 6px 14px;
-      align-items: center;
-      padding: 5px 8px;
-      border-radius: 13px;
-      min-width: 0;
-    }
-
-    .tool-pill {
-      cursor: default;
-    }
-
-    .life .link-pill {
-      min-height: 54px;
-      gap: 6px 8px;
-    }
-
-    .life .link-title {
-      white-space: normal;
-      line-height: 1.2;
-    }
-
-    .tool-copy {
-      display: grid;
-      gap: 3px;
-      min-width: 0;
-    }
-
-    .tool-select {
-      width: 100%;
-      min-width: 0;
-      border: 1px solid rgba(200, 148, 85, 0.22);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.86);
-      color: var(--muted);
-      padding: 3px 24px 3px 8px;
-      font: inherit;
-      font-size: 0.68rem;
-      font-weight: 800;
-      line-height: 1.1;
-      outline: none;
-    }
-
-    .tool-select:focus-visible {
-      border-color: rgba(200, 148, 85, 0.62);
-      box-shadow: 0 0 0 2px rgba(200, 148, 85, 0.14);
-    }
-
-    .mini-link {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 8px;
-      align-items: center;
-      min-height: 42px;
-      padding: 5px 7px;
-      border-radius: 13px;
-    }
-
-    .threed .link-pill {
-      border-color: rgba(47, 104, 178, 0.20);
-    }
-
-    .ask .mini-link {
-      border-color: rgba(126, 98, 180, 0.20);
-      padding-inline: 5px;
-    }
-
-    .link-pill.disabled,
-    .mini-link.disabled {
-      color: rgba(23, 21, 31, 0.40);
-      background: rgba(241, 241, 241, 0.64);
-      border-color: rgba(130, 130, 130, 0.16);
-      box-shadow: none;
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .disabled .link-icon,
-    .disabled .arrow {
-      filter: grayscale(1);
-      opacity: 0.42;
-    }
-
-    .language-button:hover,
-    .language-button:focus-visible,
-    .link-pill:hover,
-    .link-pill:focus-visible,
-    .mini-link:hover,
-    .mini-link:focus-visible {
-      transform: translateY(-2px);
-      border-color: rgba(200, 148, 85, 0.58);
-      box-shadow: 0 16px 34px rgba(72, 54, 38, 0.15);
-      outline: none;
-    }
-
-    .threed .link-pill:hover,
-    .threed .link-pill:focus-visible {
-      border-color: rgba(47, 104, 178, 0.46);
-    }
-
-    .ask .mini-link:hover,
-    .ask .mini-link:focus-visible {
-      border-color: rgba(126, 98, 180, 0.46);
-    }
-
-    .link-icon {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      display: block;
-      flex: 0 0 auto;
-    }
-
-    .link-title {
-      font-size: clamp(0.95rem, 1.9vw, 1.06rem);
-      font-weight: 900;
-      white-space: nowrap;
-      min-width: 0;
-    }
-
-    .link-path {
-      display: none;
-      grid-column: 2 / 3;
-      grid-row: 2;
-      color: rgba(23, 21, 31, 0.48);
-      font-size: 0.82rem;
-      font-weight: 800;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
-    }
-
-    .mini-link .link-path {
-      display: none;
-      grid-column: 2 / 3;
-      font-size: 0.83rem;
-      white-space: normal;
-    }
-
-    .arrow {
-      grid-column: 3;
-      grid-row: 1 / 3;
-      color: rgba(23, 21, 31, 0.52);
-      font-size: 1.18rem;
-    }
-
-    .footer-line {
-      margin: 36px auto 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      color: rgba(23, 21, 31, 0.52);
-      font-size: clamp(1rem, 2vw, 1.18rem);
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-
-    @media (max-width: 900px) {
-      .section-card,
-      .section-card.ask {
-        grid-template-columns: 1fr;
-      }
-
-      .section-card.ask .section-intro,
-      .section-intro {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-
-      .section-card.ask .section-intro {
-        display: grid;
-        width: auto;
-        margin-inline: 0;
-        gap: 12px;
-      }
-
-      .orb {
-        margin: 0 auto;
-      }
-
-      .section-card.ask .orb {
-        margin: 0 auto;
-      }
-
-      .section-title {
-        justify-content: center;
-      }
-
-      .ask .section-title {
-        justify-content: center;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .section-card,
-      .section-card.ask {
-        gap: 13px;
-      }
-
-      .section-card.ask .section-intro,
-      .section-intro {
-        grid-template-columns: auto auto;
-        gap: 12px;
-        justify-content: center;
-        text-align: left;
-      }
-
-      .orb {
-        width: 62px;
-        height: 62px;
-        margin: 0;
-      }
-
-      .section-title,
-      .ask .section-title {
-        justify-content: flex-start;
-        margin-bottom: 5px;
-        font-size: clamp(1.45rem, 6vw, 1.9rem);
-      }
-
-      .section-intro > div:last-child {
-        width: fit-content;
-      }
-
-      .section-card.ask .section-intro {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        width: fit-content;
-        margin-inline: auto;
-      }
-
-      .section-card.ask .orb {
-        margin: 0;
-      }
-
-      .section-copy {
-        font-size: 0.82rem;
-      }
-
-      .links,
-      .links.two,
-      .links.ask-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 7px;
-      }
-
-      .link-pill,
-      .mini-link {
-        grid-template-columns: auto 1fr auto;
-        gap: 6px;
-        min-height: 36px;
-        padding: 4px 5px;
-        border-radius: 11px;
-      }
-
-      .link-icon {
-        width: 22px;
-        height: 22px;
-      }
-
-      .link-title {
-        font-size: clamp(0.75rem, 3.3vw, 0.9rem);
-        white-space: normal;
-        line-height: 1.12;
-      }
-
-      .arrow {
-        display: none;
-      }
-
-      .more-label {
-        grid-column: 1 / -1;
-        margin: 1px 0;
-        gap: 8px;
-        font-size: 0.82rem;
-      }
-
-      .link-path {
-        grid-column: 2 / 3;
-        white-space: normal;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .page {
-        width: min(100% - 20px, 1120px);
-        padding-top: 26px;
-      }
-
-      h1 {
-        font-size: clamp(1.72rem, 8vw, 2.35rem);
-      }
-
-      .tagline {
-        max-width: 92%;
-        font-size: 0.68rem;
-      }
-
-      .languages {
-        width: 100%;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 4px;
-      }
-
-      .language-button {
-        min-width: 0;
-        padding: 3px 2px;
-        font-size: clamp(0.62rem, 2.6vw, 0.72rem);
-      }
-
-      .section-card {
-        border-radius: 20px;
-        padding: 12px;
-      }
-    }
-
-    /* Compact menus: 20px text line + 1px padding on each side. */
-    .tool-menu { position: relative; min-width: 0; }
-    .tool-menu > summary { cursor: pointer; list-style: none; }
-    .tool-menu > summary::-webkit-details-marker { display: none; }
-    .tool-menu > summary::after { content: "⌄"; position: absolute; right: 8px; }
-    .tool-menu[open] > summary::after { content: "⌃"; }
-    .tool-menu-list {
-      position: absolute;
-      top: calc(100% + 4px);
-      right: 0;
-      z-index: 30;
-      width: max-content;
-      min-width: 100%;
-      max-width: min(440px, calc(100vw - 56px));
-      max-height: min(240px, 55vh);
-      overflow-y: auto;
-      padding: 4px;
-      border: 1px solid rgba(200, 148, 85, 0.35);
-      border-radius: 10px;
-      background: #fffdf9;
-      box-shadow: 0 8px 24px rgba(72, 54, 38, 0.18);
-    }
-    .tool-menu-list a {
-      display: block;
-      padding: 1px 7px;
-      font-size: 12px;
-      line-height: 20px;
-      font-weight: 700;
-      color: var(--ink);
-      overflow-wrap: anywhere;
-      border-radius: 5px;
-    }
-    .tool-menu-list a:hover, .tool-menu-list a:focus-visible {
-      background: #f5eadb;
-      outline: 1px solid var(--gold);
-      outline-offset: -1px;
-    }
-    .section-card:has(.tool-menu[open]) { position: relative; z-index: 10; }
-    .tool-pill:has(.tool-menu[open]) { position: relative; z-index: 20; transform: none; }
-    .tool-pill:has(.tool-menu[open]):hover { transform: none; }
-
-      .tool-menu-list[aria-label="快捷工具选择"] {
-        left: var(--mobile-menu-left, 0px);
-        right: auto;
-        width: var(--mobile-menu-width, calc(100vw - 2px));
-        min-width: 0;
-        max-width: calc(100vw - 2px);
-        padding: 2px;
-        border-radius: 6px;
-      }
-      .tool-menu-list[aria-label="快捷工具选择"] a {
-        padding: 0 6px;
-        font-size: 12px;
-        line-height: 16px;
-        white-space: normal;
-        overflow-wrap: anywhere;
-      }
-
-  </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940567227813698" crossorigin="anonymous"></script>
-</head>
-<body>
-  <main class="page">
-    <section class="hero" aria-label="Star Style Studio language gateway">
-      <img class="brand-logo" src="assets/site-logo.png" alt="Star Style Studio logo" />
-      <h1>星运占台<span class="title-suffix">：幸运站台</span></h1>
-      <p class="tagline">A cutting-edge AI platform for life, creativity, and knowledge</p>
-      <nav class="languages" aria-label="Language links">
-        <a class="language-button" href="cn/index.html">简体中文</a>
-        <a class="language-button" href="zh/index.html">繁體中文</a>
-        <a class="language-button" href="en/index.html">English</a>
-        <a class="language-button" href="ja/index.html">日本語</a>
-        <a class="language-button" href="ko/index.html">한국어</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>一问三知 · 金融家</title>
+    <link rel="stylesheet" href="styles.css?v=20261103quotetime" />
+  </head>
+  <body>
+    <div class="app-shell" id="home">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="一问三知 金融家">
+          <img src="assets/hero/brand-logo.png" alt="" />
+          <span>
+            <b><span class="brand-main">一问三知 · </span><span class="brand-gold">金融家</span></b>
+            <small>AI驱动的全球市场洞察</small>
+          </span>
+        </a>
+        <div class="top-actions">
+          <button class="icon-button icon-numbered" data-icon-no="U" type="button" title="我的"><img src="assets/icons/icon-user.png" alt="" /></button>
+          <button class="icon-button icon-numbered" data-icon-no="M" type="button" title="菜单"><img src="assets/icons/icon-menu.png" alt="" /></button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <h1>问市场短/中/长期走势</h1>
+            <p>AI聚合中美港日股市、商品与资源资讯</p>
+            <div class="hero-actions">
+              <a class="primary" href="#predictions">开始分析</a>
+              <a class="secondary" href="#markets">查看市场</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="list-tools" aria-label="选股提交">
+          <form class="stock-task-form" id="stockTaskForm">
+            <span>选股预测</span>
+            <div class="stock-market-dots" aria-label="选择股市">
+              <button data-stock-market="cn" type="button">中</button>
+              <button class="active" data-stock-market="us" type="button">美</button>
+              <button data-stock-market="hk" type="button">港</button>
+              <button data-stock-market="jp" type="button">日</button>
+            </div>
+            <input id="stockMarket" type="hidden" value="us" />
+            <input id="stockCode" type="text" placeholder="输入代码" autocomplete="off" />
+            <button id="stockAddBtn" type="submit">添加</button>
+          </form>
+        </section>
+
+        <section class="market-grid" id="markets">
+          <article class="panel wide">
+            <div class="section-title icon-numbered" data-icon-no="1">
+              <img class="market-title-icon" src="assets/icons/market-logo.png" alt="" />
+              <h2>中美港日股市</h2>
+              <button class="expand-market-btn" id="openMarketDetail" type="button" title="扩大查看">⛶</button>
+            </div>
+            <div class="market-widget-grid" id="marketOverview"></div>
+          </article>
+
+          <article class="panel expandable-list-panel" data-expandable-list>
+            <div class="section-title icon-numbered" data-icon-no="2">
+              <img src="assets/icons/icon-chip.png" alt="" />
+              <h2>AI产业链价格</h2>
+              <a href="#sources">›</a>
+            </div>
+            <div class="list" id="industryList"></div>
+          </article>
+
+          <article class="panel compact expandable-list-panel" data-expandable-list>
+            <div class="section-title icon-numbered" data-icon-no="3">
+              <img src="assets/icons/icon-metals.png" alt="" />
+              <h2>贵金属</h2>
+              <a href="#news">›</a>
+            </div>
+            <div class="list" id="metalsList"></div>
+          </article>
+
+          <article class="panel compact expandable-list-panel" data-expandable-list>
+            <div class="section-title icon-numbered" data-icon-no="4">
+              <img src="assets/icons/icon-minerals.png" alt="" />
+              <h2>矿产资源</h2>
+              <a href="#news">›</a>
+            </div>
+            <div class="list" id="mineralsList"></div>
+          </article>
+
+          <article class="panel compact expandable-list-panel" data-expandable-list>
+            <div class="section-title icon-numbered" data-icon-no="5">
+              <img src="assets/icons/icon-energy.png" alt="" />
+              <h2>石油能源</h2>
+              <a href="#news">›</a>
+            </div>
+            <div class="list" id="energyList"></div>
+          </article>
+        </section>
+
+        <section class="panel predictions" id="predictions">
+          <div class="section-title analysis-title icon-numbered" data-icon-no="6">
+            <img src="assets/icons/icon-ai.png" alt="" />
+            <h2>AI 趋势研判</h2>
+            <div class="market-tabs" role="tablist" aria-label="市场选择">
+              <button data-market="cn" type="button">中</button>
+              <button class="active" data-market="us" type="button">美</button>
+              <button data-market="hk" type="button">港</button>
+              <button data-market="jp" type="button">日</button>
+            </div>
+            <div class="tabs" role="tablist">
+              <button class="active" data-horizon="short" type="button">短期</button>
+              <button data-horizon="mid" type="button">中期</button>
+              <button data-horizon="long" type="button">长期</button>
+            </div>
+          </div>
+          <div class="prediction-grid" id="predictionGrid"></div>
+          <article class="market-midterm" id="marketMidterm" hidden></article>
+          <div class="prediction-footer">
+            <p>AI时有幻觉，作投资指南存在巨大风险</p>
+            <a class="more-link" href="#predictions">查看更多分析 ›</a>
+            <div class="updated" id="updatedAt">更新中</div>
+          </div>
+        </section>
+
+        <section class="panel news-panel" id="news">
+          <div class="section-title icon-numbered" data-icon-no="7">
+            <img class="news-title-icon" src="assets/icons/marketnews.png" alt="" />
+            <h2>市场快讯</h2>
+            <a href="#news">查看更多 ›</a>
+          </div>
+          <div class="news-tabs" id="newsTabs"></div>
+          <div class="news-grid" id="newsGrid"></div>
+        </section>
+
+        <section class="sources" id="sources">
+          <h2>栏目与消息源</h2>
+          <div class="source-grid">
+            <article>
+              <h3>AI产业链</h3>
+              <p>GPU/HBM、AI服务器、云算力、数据中心、模型API、AI应用与智能硬件。</p>
+              <small>来源：TradingView News、Yahoo Finance、公司公告、半导体与云厂商新闻。</small>
+            </article>
+            <article>
+              <h3>贵金属</h3>
+              <p>黄金、白银、铂、钯、铑、铱等；关注避险、央行储备、光伏与汽车催化需求。</p>
+              <small>来源：GoldAPI、Yahoo Finance、TradingView、央行与交易所公开数据。</small>
+            </article>
+            <article>
+              <h3>矿产资源</h3>
+              <p>铜、锂、镍、稀土、铀、铁矿；关注新能源、芯片制造与全球供应链。</p>
+              <small>来源：TradingView、LME、行业协会、矿企公告与公开新闻源。</small>
+            </article>
+            <article>
+              <h3>石油能源</h3>
+              <p>WTI、Brent、OPEC篮子、汽柴油、航煤、LNG/LPG、石脑油与三烯三苯。</p>
+              <small>来源：EIA、OPEC、Reuters、TradingView、Yahoo Finance。</small>
+            </article>
+            <article>
+              <h3>市场快讯</h3>
+              <p>股市、AI大模型、AI硬件、能源、金属与商品类的RSS原版新闻。</p>
+              <small>来源：Reuters、Yahoo Finance、TradingView News、公司公告与公开RSS。</small>
+            </article>
+            <article>
+              <h3>自动更新</h3>
+              <p>股市编辑（虾头Openclaw，GPT-6-luna,GPT-Batch），新闻编辑（虾壳Gemini-4B）抓取、翻译、预测、制图后投稿。中期研判（Muse Spark），数据审查兼评论员（Hermes，Qwen3.8）</p>
+              <small>接口：/api/openclaw/news、./predictions、./dashboard。</small>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <section class="market-detail" id="marketDetail" aria-hidden="true">
+        <div class="market-detail-panel">
+          <div class="market-detail-head">
+            <h2>中美港日个股实盘</h2>
+            <button id="closeMarketDetail" type="button">×</button>
+          </div>
+          <p>TradingView 实时行情；休盘时显示最近交易日可用的盘中走势。</p>
+          <div class="stock-market-grid" id="stockMarketGrid"></div>
+        </div>
+      </section>
+
+      <nav class="bottom-nav" aria-label="底部导航">
+        <a class="active icon-numbered" data-icon-no="H" href="#home"><img src="assets/icons/icon-home-blue.png" alt="" /><span>首页</span></a>
+        <a class="icon-numbered" data-icon-no="B" href="#markets"><img src="assets/icons/icon-bars.png" alt="" /><span>市场</span></a>
+        <a class="icon-numbered" data-icon-no="A" href="#predictions"><img src="assets/icons/icon-analysis.png" alt="" /><span>分析</span></a>
+        <a class="icon-numbered" data-icon-no="P" href="#news"><img src="assets/icons/icon-user-profile.png" alt="" /><span>我的</span></a>
       </nav>
-    </section>
+    </div>
 
-    <section class="section-card life" aria-label="Life services">
-      <a class="section-intro" href="cn/index.html">
-        <div class="orb" aria-hidden="true"><img class="orb-img" src="assets/gateway-icons/life-orb.png" alt="" /></div>
-        <div>
-          <h2 class="section-title">生活 <span>Life</span></h2>
-          <p class="section-copy">AI 助力的生活探索</p>
-        </div>
-      </a>
-      <div class="links two">
-        <a class="link-pill" href="cn/zodiac/">
-          <img class="link-icon" src="assets/gateway-icons/zodiac.png" alt="" aria-hidden="true" />
-          <span class="link-title">星座运势分析</span>
-          <span class="link-path">/life/horoscope</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill" href="cn/palm/">
-          <img class="link-icon" src="assets/gateway-icons/palm.png" alt="" aria-hidden="true" />
-          <span class="link-title">手相命运分析</span>
-          <span class="link-path">/life/palm-reading</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill" href="cn/hair/">
-          <img class="link-icon" src="assets/gateway-icons/person.png" alt="" aria-hidden="true" />
-          <span class="link-title">个人形象分析</span>
-          <span class="link-path">/life/image-analysis</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <div class="link-pill tool-pill" role="group" aria-label="游戏专区">
-          <img class="link-icon" src="assets/gateway-icons/vr.png" alt="" aria-hidden="true" />
-          <div class="tool-copy">
-            <span class="link-title">游戏专区</span>
-            <details class="tool-menu">
-              <summary class="tool-select" aria-label="游戏专区选择">选择游戏</summary>
-              <nav class="tool-menu-list" aria-label="游戏专区选择">
-                <a href="https://ww2.star-style-studio.net/">1. ww2 空战</a>
-                <a href="https://www.star-style-studio.net/redstorm/RSmobi4s.html">2. 红色风暴（智谱5.3flash）</a>
-                <a href="https://www.star-style-studio.net/games/pong-war.html">3. Pongwars（蚂蚁百灵2.6flash）</a>
-                <a href="https://www.star-style-studio.net/games/HellgateMobile.html">4. 地狱之门（Opus 5.5）</a>
-              </nav>
-            </details>
-          </div>
-          <span class="arrow" aria-hidden="true">⌄</span>
-        </div>
-        <div class="link-pill tool-pill" role="group" aria-label="快捷工具">
-          <img class="link-icon" src="assets/gateway-icons/gear.png" alt="" aria-hidden="true" />
-          <div class="tool-copy">
-            <span class="link-title">快捷工具</span>
-            <details class="tool-menu">
-              <summary class="tool-select" aria-label="快捷工具选择">选择工具</summary>
-              <nav class="tool-menu-list" aria-label="快捷工具选择">
-                <a href="https://qrcode.star-style-studio.net/QRcode.html">1. 静态二维码制作</a>
-                <a href="https://qrcode.star-style-studio.net/QRcode2.html">2. 动态二维码制作</a>
-                <a href="https://qrcode.star-style-studio.net/QRcode4.html">3. 交替动态QRcode</a>
-                <a href="https://qrcode.star-style-studio.net/QRcode3.html">4. 趣味二维码制作</a>
-                <a href="https://www.star-style-studio.net/tools/YTSound.html">5. 纯音频听油管（蚂蚁百灵2.6flash）</a>
-                <a href="https://www.star-style-studio.net/Linguist/LRC.html">6. LRC标记工具</a>
-                <a href="http://www.star-style-studio.net/tools/PDF_Title_Renamer_Lite_PythonRequired.zip">7. PDF自动更名（需Python 3.12）</a>
-              </nav>
-            </details>
-          </div>
-          <span class="arrow" aria-hidden="true">⌄</span>
-        </div>
-        <div class="link-pill tool-pill" role="group" aria-label="工程工具">
-          <img class="link-icon" src="assets/gateway-icons/scientist.svg" alt="" aria-hidden="true" />
-          <div class="tool-copy">
-            <span class="link-title">工程工具</span>
-            <details class="tool-menu">
-              <summary class="tool-select" aria-label="工程工具选择">选择工程工具</summary>
-              <nav class="tool-menu-list" aria-label="工程工具选择">
-                <a href="https://www.star-style-studio.net/tools/indexfiber.html">1. 光纤变模</a>
-                <a href="https://www.star-style-studio.net/tools/indexCVD8h.html">2. CVD 炉演示（智谱5.3flash）</a>
-                <a href="https://www.star-style-studio.net/tools/indexSEMtrench_mvp_v7.html">3. SEM沟槽测量（初版GeminiFLash）</a>
-                <a href="https://www.star-style-studio.net/tools/trench_cvd_fill_v1.html">4. CVD沟槽填埋</a>
-                <a href="https://github.com/tsukukiku/tools/tree/main/PhotoADJ">5. 简易照片梯形修正（GPT6-Astra）</a>
-                <a href="https://raw.githubusercontent.com/tsukukiku/tools/main/PhotoADJ.zip">6. 高阶照片梯形修正（Gemini3.1Pro）</a>
-                <a href="https://raw.githubusercontent.com/tsukukiku/tools/main/VideoADJ.zip">7. 高阶MOV梯形修正（Gemini3.1Pro）</a>
-              </nav>
-            </details>
-          </div>
-          <span class="arrow" aria-hidden="true">⌄</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-card threed" aria-label="3D Everything">
-      <a class="section-intro" href="https://www.star-style-studio.net/3DEV/index.html">
-        <div class="orb" aria-hidden="true"><img class="orb-img" src="assets/gateway-icons/threed-orb.png" alt="" /></div>
-        <div>
-          <h2 class="section-title">3D-Everything</h2>
-          <p class="section-copy">AI驱动的三维可视化</p>
-        </div>
-      </a>
-      <div class="links two">
-        <a class="link-pill" href="https://www.star-style-studio.net/3DEV/index2.html">
-          <img class="link-icon" src="assets/gateway-icons/gear.png" alt="" aria-hidden="true" />
-          <span class="link-title">3D机械解剖图</span>
-          <span class="link-path">/3d/mechanical-cutaway</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill" href="https://www.star-style-studio.net/3Dview/">
-          <img class="link-icon" src="assets/gateway-icons/cube.png" alt="" aria-hidden="true" />
-          <span class="link-title">3D模型图</span>
-          <span class="link-path">/3d/models</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/dna.png" alt="" aria-hidden="true" />
-          <span class="link-title">3D生物解剖图</span>
-          <span class="link-path">/3d/biological-cutaway</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/printer.png" alt="" aria-hidden="true" />
-          <span class="link-title">3D模型打印</span>
-          <span class="link-path">/3d/printing</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/human.png" alt="" aria-hidden="true" />
-          <span class="link-title">3D人体图</span>
-          <span class="link-path">/3d/human-anatomy</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="link-pill" href="https://www.star-style-studio.net/3DVR/">
-          <img class="link-icon" src="assets/gateway-icons/vr.png" alt="" aria-hidden="true" />
-          <span class="link-title">3D影像全景VR</span>
-          <span class="link-path">/3d/panorama-vr</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="section-card ask" aria-label="Ask three know one">
-      <div class="section-intro">
-        <div class="orb" aria-hidden="true"><img class="orb-img" src="assets/gateway-icons/ask-orb.png" alt="" /></div>
-        <div>
-          <h2 class="section-title">一问三知</h2>
-          <p class="section-copy">多AI协同的专家组</p>
-        </div>
-      </div>
-      <div class="links ask-grid">
-        <a class="mini-link" href="https://www.star-style-studio.net/3LLM/index.html">
-          <img class="link-icon" src="assets/gateway-icons/robot.png" alt="" aria-hidden="true" />
-          <span class="link-title">AI三家</span>
-          <span class="link-path">/3LLM</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link" href="https://www.star-style-studio.net/3LLM/index1.html">
-          <img class="link-icon" src="assets/gateway-icons/sigma.png" alt="" aria-hidden="true" />
-          <span class="link-title">数学家</span>
-          <span class="link-path">/3LLM/index1</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link" href="https://vocal.star-style-studio.net/3Vocal/index.html">
-          <img class="link-icon" src="assets/gateway-icons/microphone.svg" alt="" aria-hidden="true" />
-          <span class="link-title">歌唱家</span>
-          <span class="link-path">vocal / 3Vocal</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link" href="https://www.star-style-studio.net/Linguist/translator/">
-          <img class="link-icon" src="assets/gateway-icons/translate.png" alt="" aria-hidden="true" />
-          <span class="link-title">翻译家</span>
-          <span class="link-path">/Linguist/translator/</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/music.png" alt="" aria-hidden="true" />
-          <span class="link-title">作曲家</span>
-          <span class="link-path">/ask3/composer</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link" href="https://finan.star-style-studio.net/index.html">
-          <img class="link-icon" src="assets/gateway-icons/finance.png" alt="" aria-hidden="true" />
-          <span class="link-title">金融家</span>
-          <span class="link-path">/ask3/finance</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link" href="https://www.star-style-studio.net/Linguist/index.html">
-          <img class="link-icon" src="assets/gateway-icons/translate.png" alt="" aria-hidden="true" />
-          <span class="link-title">语学家</span>
-          <span class="link-path">/Linguist/index.html</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/food.png" alt="" aria-hidden="true" />
-          <span class="link-title">美食家</span>
-          <span class="link-path">/ask3/food</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/painter.png" alt="" aria-hidden="true" />
-          <span class="link-title">大画家</span>
-          <span class="link-path">/ask3/painter</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-        <a class="mini-link disabled" aria-disabled="true" tabindex="-1">
-          <img class="link-icon" src="assets/gateway-icons/medical.png" alt="" aria-hidden="true" />
-          <span class="link-title">医学家</span>
-          <span class="link-path">/ask3/medical</span>
-          <span class="arrow" aria-hidden="true">›</span>
-        </a>
-      </div>
-    </section>
-
-    <p class="footer-line">AI 智能驱动・多维探索・赋能生活</p>
-  </main>
-  <script>
-    const toolMenus = [...document.querySelectorAll(".tool-menu")];
-    function positionMobileQuickMenu() {
-      const list = document.querySelector('.tool-menu-list[aria-label="快捷工具选择"]');
-      if (!list) return;
-      const menu = list.closest(".tool-menu");
-      if (!menu.open) return;
-      const viewport = window.visualViewport;
-      const viewportLeft = viewport ? viewport.offsetLeft : 0;
-      const viewportWidth = viewport ? viewport.width : document.documentElement.clientWidth;
-      // Absolute positioning stays anchored vertically to the trigger, even inside a backdrop-filter card.
-      const origin = menu.getBoundingClientRect().left;
-      const pillLeft = menu.closest(".tool-pill").getBoundingClientRect().left;
-      const alignedLeft = Math.max(viewportLeft, pillLeft);
-      const availableWidth = Math.max(0, viewportLeft + viewportWidth - alignedLeft - 2);
-      list.style.setProperty("--mobile-menu-left", `${alignedLeft - origin}px`);
-      list.style.setProperty("--mobile-menu-width", `${Math.min(440, availableWidth)}px`);
-    }
-    toolMenus.forEach(menu => menu.addEventListener("toggle", positionMobileQuickMenu));
-    window.addEventListener("resize", positionMobileQuickMenu);
-    window.addEventListener("pageshow", positionMobileQuickMenu);
-    window.addEventListener("load", positionMobileQuickMenu);
-    window.addEventListener("scroll", positionMobileQuickMenu, { passive: true });
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", positionMobileQuickMenu);
-      window.visualViewport.addEventListener("scroll", positionMobileQuickMenu);
-    }
-    toolMenus.forEach(menu => {
-      menu.querySelector("summary").addEventListener("click", () => {
-        if (!menu.open) toolMenus.forEach(other => { if (other !== menu) other.open = false; });
-      });
-      menu.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-          menu.open = false;
-          menu.querySelector("summary").focus();
-        }
-      });
-      menu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => { menu.open = false; }));
-    });
-    document.addEventListener("click", event => {
-      toolMenus.forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
-    });
-  </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"0829df47503149ad899f4819cade6d5e","r":1}' crossorigin="anonymous"></script>
-</body>
+  <script src="app.js?v=20261103quotetime"></script>
+  </body>
 </html>
